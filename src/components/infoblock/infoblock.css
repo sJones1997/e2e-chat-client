@@ -1,0 +1,25 @@
+
+
+.info-block {
+    position: absolute;
+    bottom:10%;
+    right: 50%;
+    transform: translateX(50%);
+    width:40%;
+}
+
+.block {
+    padding: 0.05em;    
+    border-radius: 10px;
+    color:#fff;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.error {
+    background-color:tomato;
+}
+
+.info {
+    background-color: teal;
+}

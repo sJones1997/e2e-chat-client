@@ -4,8 +4,8 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import Register from '../features/register/Register'
-
+import Register from '../features/register/Register';
+export const baseApi = process.env.REACT_APP_API_URL;
 
 function App() {
   return (

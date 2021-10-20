@@ -1,18 +1,30 @@
 import { useState } from "react";
 import './register.css';
+import { submitCredentials, errored, errorMessage } from "./registerSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faGoogle } from "@fortawesome/free-brands-svg-icons"
+import { useDispatch } from "react-redux";
+import InfoBlock from "../../components/infoblock/infoblock";
+import { useSelector } from "react-redux";
 
 export default function Register(){
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const errorMsg = useSelector(errorMessage);
+    const hasError = useSelector(errored);
     const [confirmPassword, setConfirmPassword] = useState("");
+    const dispatch = useDispatch();
 
+    const handleSubmission = (e) => {
+        e.preventDefault();
+        dispatch(submitCredentials({username: username, password: password, confirmPassword: confirmPassword}));
+    }
+    
     return (
         <div className="register-container">
             <div className="form-container">
-                <form>
+                <form onSubmit={(e) => {handleSubmission(e)}}>
                     <div className="form-header">
                         <h2>Register an account</h2>
                     </div>                    
@@ -32,6 +44,13 @@ export default function Register(){
                     </div>
                 </form>
             </div>
+            {
+                (hasError)
+                ?
+                <InfoBlock message={errorMsg} error={hasError} />
+                :
+                ''
+            }
         </div>
     )
 }

@@ -89,3 +89,8 @@
     margin-top:2em !important;
     font-size: 1.12em;
 }
+
+.register-container .form-container form .form-footer .login-prompt p a {
+    color:#134E5E;
+    font-weight: 600;   
+}
