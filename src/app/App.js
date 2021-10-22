@@ -5,6 +5,7 @@ import {
   Route
 } from "react-router-dom";
 import Register from '../features/register/Register';
+import Login from '../features/login/Login';
 export const baseApi = process.env.REACT_APP_API_URL;
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Switch>
           <Route exact path='/' />
           <Route exact path='/register' component={Register} />
+          <Route exact path='/login' component={Login} />
         </Switch>
       </Router>
     </div>

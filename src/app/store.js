@@ -1,8 +1,11 @@
 import { configureStore, applyMiddleware, combineReducers } from "@reduxjs/toolkit";
 import registerReducer from '../features/register/registerSlice';
+import loginReducer from '../features/login/loginSlice';
+
 
 const combinedReducer = combineReducers({
-    registerSlice: registerReducer
+    registerSlice: registerReducer,
+    loginSlice: loginReducer
 })
 
 const rootReducer = (state, action) => {

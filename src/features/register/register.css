@@ -1,5 +1,5 @@
 
-.register-container {
+.register-container, .login-container {
     height:85vh;
     display: flex;
     align-items: center;
@@ -15,7 +15,17 @@
     margin: 0 auto;
 }
 
-.register-container .form-container form {
+.login-container .form-container {
+    width:22%;
+    height:55%;
+    background-color:#fff;
+    border-radius: 5px;
+    box-shadow: 10px 10px 16px rgba(24, 38, 40, 0.15);
+    border: 1px solid rgba(24, 38, 40, 0.25);
+    margin: 0 auto;   
+}
+
+.register-container .form-container form, .login-container .form-container form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -25,14 +35,14 @@
     height:100%;
 }
 
-.register-container .form-container form .form-header {
+.register-container .form-container form .form-header, .login-container .form-container form .form-header {
     width:100%;
     font-size: 1.4em;
     text-align: center;
     color:#134E5E;
 }
 
-.register-container .form-container form .form-body {
+.register-container .form-container form .form-body , .login-container .form-container form .form-body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -40,7 +50,7 @@
     width:100%;
 }
 
-.register-container .form-container form .form-body input {
+.register-container .form-container form .form-body input , .login-container .form-container form .form-body input {
     margin: 1em auto;
     width:80%;
     box-sizing: border-box;
@@ -50,18 +60,18 @@
     background-color:transparent;
 }
 
-.register-container .form-container form .form-body input:focus {
+.register-container .form-container form .form-body input:focus, .login-container .form-container form .form-body input:focus {
     border:none;
     outline: none;
     border-bottom: 1px solid rgba(24, 38, 40, 1);        
 }
 
-.register-container .form-container form .form-footer {
+.register-container .form-container form .form-footer, .login-container .form-container form .form-footer {
     width:80%;
     
 }
 
-.register-container .form-container form .form-footer .sign-in-options {
+.register-container .form-container form .form-footer .sign-in-options, .login-container .form-container form .form-footer .sign-in-options {
     width:100%;
     text-align: left;    
     display: flex;
@@ -69,7 +79,7 @@
     justify-content: space-between;
 }
 
-.register-container .form-container form .form-footer input {
+.register-container .form-container form .form-footer input, .login-container .form-container form .form-footer input {
     background-color:#134E5E;
     color:#fff;
     width:50%;
@@ -80,17 +90,17 @@
 
 }
 
-.register-container .form-container form .form-footer span {
+.register-container .form-container form .form-footer span, .login-container .form-container form .form-footer span {
     font-size: 2em;
     color:#134E5E;
 } 
 
-.register-container .form-container form .form-footer .login-prompt p {
+.register-container .form-container form .form-footer .login-prompt p,  .login-container .form-container form .form-footer .register-prompt p {
     margin-top:2em !important;
     font-size: 1.12em;
 }
 
-.register-container .form-container form .form-footer .login-prompt p a {
+.register-container .form-container form .form-footer .login-prompt p a,  .login-container .form-container form .form-footer .register-prompt p a {
     color:#134E5E;
     font-weight: 600;   
 }

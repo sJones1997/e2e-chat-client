@@ -1,8 +1,8 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {baseApi} from '../../app/App';
 
-export const submitCredentials = createAsyncThunk(
-    'registerSlice/submitCredentials', 
+export const submitRegistration = createAsyncThunk(
+    'registerSlice/submitRegistration', 
     async (obj) => {
 
         const {username, password, confirmPassword} = obj;        
@@ -45,22 +45,21 @@ const registerSlice = createSlice({
         errorMessage: ''
     },
     extraReducers: {
-        [submitCredentials.pending]: (state, action) => {
+        [submitRegistration.pending]: (state, action) => {
             state.isLoading = true;
         },
-        [submitCredentials.fulfilled]: (state, action) => {
+        [submitRegistration.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.hasError = false;
             if(action.payload.status === 200){
                 state.errorMessage = '';
-                state.sessionActive = true;
+                state.sessionActive = state.redirectRequired = true;
             } else {
                 state.hasError = true;
                 state.errorMessage = action.payload.message;
             }
-
         },
-        [submitCredentials.rejected]: (state, action) => {
+        [submitRegistration.rejected]: (state, action) => {
             state.isLoading = false;
             state.hasError = true            
         }

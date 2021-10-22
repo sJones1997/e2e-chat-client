@@ -1,11 +1,11 @@
 import { useState } from "react";
 import './register.css';
-import { submitCredentials, errored, errorMessage } from "./registerSlice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faGoogle } from "@fortawesome/free-brands-svg-icons"
+import { submitRegistration, errored, errorMessage } from "./registerSlice";
 import { useDispatch } from "react-redux";
 import InfoBlock from "../../components/infoblock/infoblock";
+import GoogleIcon from "../../components/googleicon/GoogleIcon";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 export default function Register(){
 
@@ -18,7 +18,7 @@ export default function Register(){
 
     const handleSubmission = (e) => {
         e.preventDefault();
-        dispatch(submitCredentials({username: username, password: password, confirmPassword: confirmPassword}));
+        dispatch(submitRegistration({username: username, password: password, confirmPassword: confirmPassword}));
     }
     
     return (
@@ -35,11 +35,11 @@ export default function Register(){
                     </div>
                     <div className="form-footer">
                         <div className="sign-in-options">
-                            <input type="submit" value="Sign in" />
-                            <span><FontAwesomeIcon icon={faGoogle} /></span>                            
-                        </div>
+                            <input type="submit" value="Register" /> 
+                            <GoogleIcon/>                                                     
+                        </div>  
                         <div className="login-prompt">
-                            <p>Already have an account? <a href="Login">Login in</a>.</p>                            
+                            <p>Already have an account? <Link to='/login'>Login here</Link>.</p>                            
                         </div>
                     </div>
                 </form>
