@@ -1,0 +1,38 @@
+
+.chatroom-container {
+    width:100vw;
+    height:100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatroom-container .chatroom {
+    background-color: rgba(255,255,255, 0.85);
+    width:97%;
+    height:95%;
+    border-radius: 10px;
+    box-shadow: 0 0 32px rgba(255,255,255, 0.25);
+    border: 1px solid rgba(33, 33, 33, 0.25);  
+    display: flex;
+}
+
+.chatroom-container .chatroom .side-menu {
+    flex:1;  
+}
+
+.chatroom-container .chatroom .chat-area {
+    flex:3;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid rgba(33, 33, 33, 0.25);  
+}
+
+.chatroom-container .chatroom .chat-area .messages {
+    flex:10;
+}
+
+.chatroom-container .chatroom .chat-area .chat-box {
+    flex: 1;
+    border-top: 1px solid rgba(33, 33, 33, 0.25);     
+}

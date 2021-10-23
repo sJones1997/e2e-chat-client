@@ -1,0 +1,42 @@
+
+.chat-box-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width:90%;
+    margin: 0 auto;
+}
+
+.chat-box-container form {
+    display: flex;
+    width:100%;
+    justify-content: space-around;    
+}
+
+.chat-box-container form input[type='text']{
+    width:85%;
+    border-radius: 25px;
+    border:1px solid rgba(33, 33, 33, 0.25); 
+    padding:1em;
+    box-sizing: border-box;
+}
+
+.chat-box-container form input[type='text']:focus {
+    outline: none;
+    border:1px solid rgba(33, 33, 33, 0.25); 
+}
+
+.chat-box-container form input[type='text']::placeholder {
+    font-size: 1.05em;
+}
+
+.chat-box-container form input[type='submit']{
+    width:10%;
+    border-radius: 25px;
+    border:none;  
+    background: rgba(113, 178, 128, 0.65);
+    color:#fff;
+    font-size: 1em;
+    font-weight: 600;
+}
