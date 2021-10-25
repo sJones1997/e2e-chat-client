@@ -9,13 +9,14 @@ export default function ChatBox() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(socket)
         socket.emit("message", message)
     }
 
     return (
         <div className="chat-box-container">
             <form onSubmit={(e) => {handleSubmit(e)}}>
-                <input type="text" placeholder="Got something to say?" value={message} onChange={(e) => setMessage(e.target.value)}/>
+                <input type="text" placeholder="Enter your message here..." value={message} onChange={(e) => setMessage(e.target.value)}/>
                 <input type="submit" value="Send" />
             </form>
         </div>

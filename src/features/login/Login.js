@@ -24,7 +24,7 @@ export default function Login(){
             <div className="form-container">
                 <form onSubmit={(e) => {handleSubmission(e)}}>
                     <div className="form-header">
-                        <h2>Login</h2>
+                        <h2>Login below</h2>
                     </div>
                     <div className="form-body">
                         <input type="text" placeholder="Username" min="3" max="100" value={username} onChange={(e) => {setUsername(e.target.value)}}/>

@@ -1,0 +1,82 @@
+
+.add-room-container {
+    background-color:#fff;
+    width:30%;
+    position: absolute;
+    z-index: 3 !important;
+    top:35%;
+    left:50%;
+    height:22.5%;
+    transform: translateX(-50%);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 0 12px rgba(24, 38, 40, 0.2);
+}
+
+.add-room-container .add-room-header {
+    justify-self: start;
+    width:90%;
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    padding: 0.5em 0;
+    box-sizing: border-box;
+}
+
+.add-room-container .add-room-header h3 {
+    cursor: pointer;
+}
+
+.add-room-container .add-room-body {
+    height: 50%;
+    width:90%;
+}
+
+.add-room-container .add-room-body form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 80%;
+    margin: 2.5% 0;
+}
+
+.add-room-container .add-room-body form .room-details {
+    display: flex;
+    justify-content: space-between;    
+}
+
+.add-room-container .add-room-body form input {
+    width:40%;
+    border: none;
+    border-bottom: 1px solid rgba(24, 38, 40, 1);       
+    padding:0.25em 0;
+    box-sizing: border-box;      
+}
+
+.add-room-container .add-room-body form input::placeholder {
+    font-size: 1.2em;
+}
+
+.add-room-container .add-room-body form input:focus {
+    outline: none;   
+}
+
+.add-room-container .add-room-body form input[type="submit"] {
+    border-radius: 25px;
+    border:none;  
+    background: rgba(113, 178, 128, 0.65);
+    color:#fff;
+    padding: 0.5em 0;
+    font-size: 0.9em;
+    font-weight: 600;  
+    width: 70%;  
+    cursor: pointer;
+}
+
+.add-room-container .add-room-body form input[type="submit"]:hover {
+    background: rgba(113, 178, 128, 0.8);    
+}

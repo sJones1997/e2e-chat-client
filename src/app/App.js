@@ -12,21 +12,22 @@ export const baseApi = `${process.env.REACT_APP_API_URL}/api`;
 export const socket = socketIOCient(`${process.env.REACT_APP_API_URL}`, {
   withCredentials: true
 });
-socket.on("connect", () => {
-  console.log(socket.id)
-})
+
+socket.connect();
 
 function App() {
+
   return (
     <div className="App">
-      <Router>
+        <Router>
 
-        <Switch>
-          <Route exact path='/' component={Chatroom} />
-          <Route exact path='/register' component={Register} />
-          <Route exact path='/login' component={Login} />
-        </Switch>
-      </Router>
+          <Switch>
+            <Route exact path='/' component={Chatroom} />
+            <Route exact path='/register' component={Register} />
+            <Route exact path='/login' component={Login} />
+          </Switch>
+        </Router>
+        <div className="overlay"></div>
     </div>
   );
 }

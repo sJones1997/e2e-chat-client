@@ -10,6 +10,10 @@ export default function Messages(){
         setNewMessage(data);
     });
 
+    socket.on("connect_error", err => {
+        console.log(err.data)
+    })
+
     return (
         <div>
             {newMessage}

@@ -47,6 +47,7 @@ const registerSlice = createSlice({
     extraReducers: {
         [submitRegistration.pending]: (state, action) => {
             state.isLoading = true;
+            state.hasError = false;
         },
         [submitRegistration.fulfilled]: (state, action) => {
             state.isLoading = false;
