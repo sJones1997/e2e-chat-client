@@ -3,13 +3,15 @@ import registerReducer from '../features/register/registerSlice';
 import loginReducer from '../features/login/loginSlice';
 import addRoomReducer from '../components/addroom/addroomSlice';
 import sideMenuReducer from "../components/sidemenu/sidemenuSlice";
+import chatboxReducer from '../components/chatbox/chatboxSlice';
 
 
 const combinedReducer = combineReducers({
     registerSlice: registerReducer,
     loginSlice: loginReducer,
     addRoomSlice: addRoomReducer,
-    sideMenuSlice: sideMenuReducer
+    sideMenuSlice: sideMenuReducer,
+    chatboxSlice: chatboxReducer
 })
 
 const rootReducer = (state, action) => {

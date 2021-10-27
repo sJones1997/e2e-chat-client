@@ -8,7 +8,7 @@ export const getUserRooms = createAsyncThunk(
             method: 'GET',
             credentials: 'include',
             headers: {
-                'Accept': 'applicaiton/json',
+                'Accept': 'application/json',
                 'Content-Type':'application/json'
             }
         });
@@ -35,7 +35,9 @@ const sideMenuSlice = createSlice({
         [getUserRooms.fulfilled]: (state, action) => {
             state.isLoading = false;
             if(action.payload.status === 200){
-                state.userRooms = action.payload.message;
+                if(!(action.payload.message.length === 1 && action.payload.message[0].roomId === null)){
+                    state.userRooms = action.payload.message;
+                }
             } else {
                 state.hasError = true;
             }
@@ -43,7 +45,8 @@ const sideMenuSlice = createSlice({
         [getUserRooms.rejected]: (state, action) => {
             state.hasError = true;
             state.errorMessage = action.payload.message;
-        }
+        },
+        
     }
 })
 

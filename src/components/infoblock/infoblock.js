@@ -8,7 +8,6 @@ export default function InfoBlock(match){
 
     useEffect(() => {
         const {message} = match;
-        console.log(message);
         let response;
         if(typeof(message) === 'object'){
             response = message.map((e, i) => {

@@ -5,7 +5,6 @@ export const submitLogin = createAsyncThunk(
     'loginSlice/submitLogin', 
     async (obj) => {
         const {username, password} = obj;
-        console.log(obj)
         const validateCaps = /[A-Z]/
         const validateNum = /\d/
         if(password.match(validateCaps) && password.match(validateNum)){

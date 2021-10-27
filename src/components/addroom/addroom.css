@@ -1,5 +1,5 @@
 
-.add-room-container {
+.add-room-container .modal {
     background-color:#fff;
     width:30%;
     position: absolute;
@@ -15,7 +15,7 @@
     box-shadow: 0 0 12px rgba(24, 38, 40, 0.2);
 }
 
-.add-room-container .add-room-header {
+.add-room-container .modal .add-room-header {
     justify-self: start;
     width:90%;
     height: 30%;
@@ -27,16 +27,16 @@
     box-sizing: border-box;
 }
 
-.add-room-container .add-room-header h3 {
+.add-room-container .modal .add-room-header h3 {
     cursor: pointer;
 }
 
-.add-room-container .add-room-body {
+.add-room-container .modal .add-room-body {
     height: 50%;
     width:90%;
 }
 
-.add-room-container .add-room-body form {
+.add-room-container .modal .add-room-body form {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -44,12 +44,12 @@
     margin: 2.5% 0;
 }
 
-.add-room-container .add-room-body form .room-details {
+.add-room-container .modal .add-room-body form .room-details {
     display: flex;
     justify-content: space-between;    
 }
 
-.add-room-container .add-room-body form input {
+.add-room-container .modal .add-room-body form input {
     width:40%;
     border: none;
     border-bottom: 1px solid rgba(24, 38, 40, 1);       
@@ -57,15 +57,15 @@
     box-sizing: border-box;      
 }
 
-.add-room-container .add-room-body form input::placeholder {
+.add-room-container .modal .add-room-body form input::placeholder {
     font-size: 1.2em;
 }
 
-.add-room-container .add-room-body form input:focus {
+.add-room-container .modal .add-room-body form input:focus {
     outline: none;   
 }
 
-.add-room-container .add-room-body form input[type="submit"] {
+.add-room-container .modal .add-room-body form input[type="submit"] {
     border-radius: 25px;
     border:none;  
     background: rgba(113, 178, 128, 0.65);
@@ -77,6 +77,6 @@
     cursor: pointer;
 }
 
-.add-room-container .add-room-body form input[type="submit"]:hover {
+.add-room-container .modal .add-room-body form input[type="submit"]:hover {
     background: rgba(113, 178, 128, 0.8);    
 }

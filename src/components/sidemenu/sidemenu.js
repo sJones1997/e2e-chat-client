@@ -2,10 +2,13 @@ import './sidemenu.css';
 import SearchBar from '../searchbar/searchbar';
 import AddRoom from '../addroom/addroom';
 import { getUserRooms, userRooms, errored, errorMessage, loading } from './sidemenuSlice';
-import { useEffect } from 'react';
+import { setNewRoom } from '../chatbox/chatboxSlice';
+import { newRoom } from '../addroom/addroomSlice';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import InfoBlock from '../infoblock/infoblock';
+import { socket } from '../../app/App';
 
 export default function SideMenu(){
 
@@ -16,13 +19,23 @@ export default function SideMenu(){
     const errorMsg = useSelector(errorMessage);
     const isLoading = useSelector(loading);
 
+    const [currentRoom, setCurrentRoom] = useState('');
+
+    const roomToAdd = useSelector(newRoom);
+
     useEffect(() => {
         dispatch(getUserRooms());
     }, [dispatch])
 
+    useEffect(() => {
+        if(roomToAdd){
+            dispatch(getUserRooms());
+        }
+    }, [roomToAdd, dispatch])
+
     const handleModal = () => {
         const overlay = document.querySelector(".overlay");
-        const modal = document.querySelector(".add-room-container");
+        const modal = document.querySelector(".modal");
         console.log(overlay.style.display, modal.style.display)
         if((!overlay.style.display || overlay.style.display === "none") && (!modal.style.display || modal.style.display === "none")){
             overlay.style.display = "block";
@@ -32,6 +45,16 @@ export default function SideMenu(){
                 modal.style.display = "none";                
             })
         }
+    }
+
+    const joinRoom = (newRoom, roomId) => {
+        console.log(newRoom, currentRoom);
+        dispatch(setNewRoom({name: newRoom, id: roomId}))
+        if(newRoom !== currentRoom){
+            socket.emit("leave-room", currentRoom);
+        }
+        socket.emit("join-room", newRoom);
+        setCurrentRoom(newRoom);
     }
 
     return (
@@ -47,7 +70,7 @@ export default function SideMenu(){
                     !(hasError && isLoading)
                     ?
                     rooms.map((e,i) => (
-                        <div className="new-room" key={i}>
+                        <div className="new-room" key={i} onClick={() => {joinRoom(e.name, e.roomId)}}>
                             <h3>{e.name}</h3>
                         </div>
                     ))

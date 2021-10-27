@@ -19,7 +19,6 @@ export const createNewRoom = createAsyncThunk(
         const {status} = data;
         const json = await data.json();
         json['status'] = status;
-        console.log(json)
         return json;
     }
 )
@@ -31,6 +30,12 @@ const addRoomSlice = createSlice({
         hasError: false,
         errorMessage: '',
         newRoom: {}
+    },
+    reducers: {
+        resetErrorStatus: state => {
+            state.errorMessage = '';
+            state.hasError = false;
+        }
     },
     extraReducers: {
         [createNewRoom.pending]: (state, action) => {
@@ -44,7 +49,7 @@ const addRoomSlice = createSlice({
                 state.errorMessage = '';
                 state.newRoom = action.payload.newRoom; 
             } else {
-                state.hasError = false;
+                state.hasError = true;
                 state.errorMessage = action.payload.message;
             }
         },
@@ -57,5 +62,7 @@ const addRoomSlice = createSlice({
 
 export const errored = state => state.addRoomSlice.hasError;
 export const errorMessage = state => state.addRoomSlice.errorMessage;
+export const newRoom = state => state.addRoomSlice.newRoom;
+export const {resetErrorStatus} = addRoomSlice.actions;
 
 export default addRoomSlice.reducer;
