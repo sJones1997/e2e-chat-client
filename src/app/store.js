@@ -4,6 +4,7 @@ import loginReducer from '../features/login/loginSlice';
 import addRoomReducer from '../components/addroom/addroomSlice';
 import sideMenuReducer from "../components/sidemenu/sidemenuSlice";
 import chatboxReducer from '../components/chatbox/chatboxSlice';
+import messageReducer from '../components/messages/messageSlice';
 
 
 const combinedReducer = combineReducers({
@@ -11,7 +12,8 @@ const combinedReducer = combineReducers({
     loginSlice: loginReducer,
     addRoomSlice: addRoomReducer,
     sideMenuSlice: sideMenuReducer,
-    chatboxSlice: chatboxReducer
+    chatboxSlice: chatboxReducer,
+    messageSlice: messageReducer
 })
 
 const rootReducer = (state, action) => {
