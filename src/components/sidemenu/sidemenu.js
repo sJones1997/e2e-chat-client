@@ -1,10 +1,10 @@
 import './sidemenu.css';
 import SearchBar from '../searchbar/searchbar';
 import AddRoom from '../addroom/addroom';
-import { getUserRooms, userRooms, errored, errorMessage, loading } from './sidemenuSlice';
+import { getUserRooms, userRooms, errored, errorMessage, loading, setError, resetError } from './sidemenuSlice';
 import { setNewRoom } from '../chatbox/chatboxSlice';
 import { newRoom } from '../addroom/addroomSlice';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import InfoBlock from '../infoblock/infoblock';
@@ -46,8 +46,17 @@ export default function SideMenu(){
     }
 
     const joinRoom = (newRoom, roomId) => {
-        dispatch(setNewRoom({name: newRoom, id: roomId}))
-        socket.emit("join-room", newRoom);
+        socket.emit("join-room", newRoom, roomId, (connected, message) => {
+            if(connected){
+                dispatch(setNewRoom({name: newRoom, id: roomId}))        
+            } else {
+                dispatch(setError({'message': message}));
+                setTimeout(() => {
+                    dispatch(resetError())
+                }, 5000);
+            }      
+        });
+
     }
 
     return (

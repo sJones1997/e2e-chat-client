@@ -27,6 +27,17 @@ const sideMenuSlice = createSlice({
         userRooms: [],
         errorMessage: ''
     },
+    reducers: {
+        setError: (state, action) => {
+            console.log("here")
+            state.hasError = true;
+            state.errorMessage = action.payload.message;
+        },
+        resetError: (state) => {
+            state.hasError = false;
+            state.errorMessage = '';
+        }
+    },
     extraReducers: {
         [getUserRooms.pending]: (state, action) => {
             state.isLoading = true;
@@ -55,5 +66,6 @@ export const loading = state => state.sideMenuSlice.isLoading;
 export const errored = state => state.sideMenuSlice.hasError;
 export const errorMessage = state => state.sideMenuSlice.errorMessage;
 export const userRooms = state => state.sideMenuSlice.userRooms;
+export const {setError, resetError} = sideMenuSlice.actions;
 
 export default sideMenuSlice.reducer;

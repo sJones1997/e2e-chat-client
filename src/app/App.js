@@ -12,7 +12,6 @@ export const baseApi = `${process.env.REACT_APP_API_URL}/api`;
 export const socket = socketIOCient(`${process.env.REACT_APP_API_URL}`, {
   withCredentials: true
 });
-
 socket.connect();
 
 function App() {
