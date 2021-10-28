@@ -19,8 +19,6 @@ export default function SideMenu(){
     const errorMsg = useSelector(errorMessage);
     const isLoading = useSelector(loading);
 
-    const [currentRoom, setCurrentRoom] = useState('');
-
     const roomToAdd = useSelector(newRoom);
 
     useEffect(() => {
@@ -48,13 +46,8 @@ export default function SideMenu(){
     }
 
     const joinRoom = (newRoom, roomId) => {
-        console.log(newRoom, currentRoom);
         dispatch(setNewRoom({name: newRoom, id: roomId}))
-        if(newRoom !== currentRoom){
-            socket.emit("leave-room", currentRoom);
-        }
         socket.emit("join-room", newRoom);
-        setCurrentRoom(newRoom);
     }
 
     return (

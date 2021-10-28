@@ -15,7 +15,9 @@ export default function ChatBox() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if(roomName && roomId){
-            socket.emit("message", message, roomName)            
+            socket.emit("message", roomName, message => {
+                console.log(message);
+            })            
         } else {
             console.log("No room!")
         }
