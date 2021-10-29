@@ -31,9 +31,6 @@ const chatboxSlice = createSlice({
     reducers: {
         setNewRoom: (state, action) => {
             state.currentRoom = action.payload;
-        },
-        getCurrentRoom: state => {
-            return state.currentRoom;
         }
     },
     extraReducers: {

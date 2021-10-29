@@ -21,6 +21,25 @@ export const getRoomInfo = createAsyncThunk(
     }
 )
 
+export const leaveRoom = createAsyncThunk(
+    'messageSlice/leaveRoom', 
+    async (obj) => {
+        const {id} = obj;
+        const data = await fetch(`${baseApi}/user-rooms/${id}`, {
+            method:'DELETE',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        const {status} = data;
+        const json = await data.json();
+        json['status'] = status;
+        return json;
+    }
+)
+
 
 const messageSlice = createSlice({
     name:'messageSlice',
@@ -29,7 +48,10 @@ const messageSlice = createSlice({
         isLoading: false,
         messages: [],
         roomInfo: {},
-        errorMessage: ''
+        errorMessage: '',
+        userPrompt: false,
+        userPromptMessage: '',
+        successMessage: ''
     },
     extraReducers: {
         [getRoomInfo.pending]: (state, action) => {
@@ -50,9 +72,30 @@ const messageSlice = createSlice({
         }, 
         [getRoomInfo.rejected]: (state, action) => {
             state.hasError = false;
+        },
+        [leaveRoom.pending]: (state, action) => {
+            state.hasError = false;
+            state.isLoading = true;
+        },
+        [leaveRoom.fulfilled]: (state, action) => {
+            state.isLoading = false;
+            if(action.payload.status === 200){
+                if(!action.payload.prompt.status){
+                    state.userPrompt =  true;
+                    state.userPromptMessage = action.payload.prompt.message;
+                    return;
+                }
+                state.successMessage = action.payload.message
+            }
+        },
+        [leaveRoom.rejected]: (state, action) => {
+            state.hasError = true;
+            state.isLoading = false;
         }
     }
 })
 
 export const roomInfo = state => state.messageSlice.roomInfo; 
+export const userPrompt = state => state.messageSlice.userPrompt;
+export const userPromptMessage = state => state.messageSlice.userPromptMessage;
 export default messageSlice.reducer;
