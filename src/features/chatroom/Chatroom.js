@@ -5,6 +5,7 @@ import './chatroom.css';
 import ChatBox from '../../components/chatbox/chatbox';
 import Messages from '../../components/messages/messages';
 import SideMenu from '../../components/sidemenu/sidemenu';
+import RoomPanel from '../../components/roompanel/roomPanel';
 
 export default function Chatroom(){
 
@@ -27,6 +28,9 @@ export default function Chatroom(){
                     <SideMenu />
                 </div>
                 <div className="chat-area">
+                    <div className="room-panel">
+                        <RoomPanel/>
+                    </div>
                     <div className="messages">
                         <Messages />
                     </div>

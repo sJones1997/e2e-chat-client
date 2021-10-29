@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { baseApi } from "../../app/App";
+import { currentUserRoom } from "../chatbox/chatboxSlice";
 
 export const getUserRooms = createAsyncThunk(
     'sideMenuSlice/getUserRooms',
@@ -25,17 +26,21 @@ const sideMenuSlice = createSlice({
         isLoading: false,
         hasError: false,
         userRooms: [],
-        errorMessage: ''
+        currentRoom: {},
+        errorMessage: ''    
     },
     reducers: {
         setError: (state, action) => {
-            console.log("here")
             state.hasError = true;
             state.errorMessage = action.payload.message;
         },
         resetError: (state) => {
             state.hasError = false;
             state.errorMessage = '';
+        },
+        setCurrentRoom: (state, action) =>{
+            state.currentRoom = action.payload;
+            console.log(state.currentRoom)
         }
     },
     extraReducers: {
@@ -48,6 +53,7 @@ const sideMenuSlice = createSlice({
             if(action.payload.status === 200){
                 if(!(action.payload.message.length === 1 && action.payload.message[0].roomId === null)){
                     state.userRooms = action.payload.message;
+                    state.currentRoom = state.userRooms[0];
                 }
             } else {
                 state.hasError = true;
@@ -56,8 +62,7 @@ const sideMenuSlice = createSlice({
         [getUserRooms.rejected]: (state, action) => {
             state.hasError = true;
             state.errorMessage = action.payload.message;
-        },
-        
+        }            
     }
 })
 
@@ -66,6 +71,7 @@ export const loading = state => state.sideMenuSlice.isLoading;
 export const errored = state => state.sideMenuSlice.hasError;
 export const errorMessage = state => state.sideMenuSlice.errorMessage;
 export const userRooms = state => state.sideMenuSlice.userRooms;
-export const {setError, resetError} = sideMenuSlice.actions;
+export const currentRoom = state => state.sideMenuSlice.currentRoom;
+export const {setError, resetError, getTopRoom, setCurrentRoom} = sideMenuSlice.actions;
 
 export default sideMenuSlice.reducer;
