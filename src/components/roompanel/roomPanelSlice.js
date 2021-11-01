@@ -16,7 +16,6 @@ export const getRoom = createAsyncThunk(
         const {status} = data;
         const json = await data.json();
         json['status'] = status;
-        console.log(json);
         return json;
     }
 )
@@ -44,7 +43,6 @@ export const deleteRoom = createAsyncThunk(
     'roomPanelSlice/deleteRoom',
     async (obj) => {
         const {id} = obj;
-        console.log(id)
         const data = await fetch(`${baseApi}/room/${id}`,{
             method:'DELETE',
             credentials: 'include',
@@ -110,7 +108,6 @@ const roomPanelSlice = createSlice({
         [leaveRoom.fulfilled]: (state, action) => {
             state.isLoading = false;
             if(action.payload.status === 200){
-                console.log(action.payload.prompt)
                 if(action.payload.prompt){
                     state.userPrompt =  true;
                     state.userPromptMessage = action.payload.prompt.message;
@@ -118,7 +115,6 @@ const roomPanelSlice = createSlice({
                     state.successMessage = action.payload.message
                     state.userLeft = true;                    
                 }
-                console.log(state.userLeft);
             }
         },
         [leaveRoom.rejected]: (state, action) => {

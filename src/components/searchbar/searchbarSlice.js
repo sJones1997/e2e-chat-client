@@ -4,15 +4,57 @@ import { createSlice } from "@reduxjs/toolkit";
 const searchBarSlice = createSlice({
     name: 'searchBarSlice',
     initialState: {
-        searchResults: {}
+        userSearchResults: [],
+        roomSearchResults: [],
+        roomSearchHasResult: false,
+        userSearchHasResult: false,
+        userJoinedNewRoom: false,
+        joinFeedBack: '',
+        hasError: false
     },
     reducers: {
         updateSearchResult: (state, action) => {
-            state.searchResults = action.payload;
+            if(!action.payload.result.rooms.status){
+                state.roomSearchHasResult = false;
+                state.roomSearchResults = [action.payload.result.rooms.message];                
+            } else {
+                state.roomSearchHasResult = true;
+                state.roomSearchResults = action.payload.result.rooms.message;                
+            }
+            if(!action.payload.result.users.status){
+                state.userSearchHasResult = false;
+                state.userSearchResults = [action.payload.result.users.message];                
+            } else {
+                state.userSearchHasResult = true;
+                state.userSearchResults = action.payload.result.users.message;                
+            }            
+        },
+        restoreResults: (state) => {
+            state.roomSearchHasResult = false;
+            state.roomSearchResults = [];         
+            state.userSearchHasResult = false;
+            state.userSearchResults = [];                    
+        },
+        userJoinedRoom: (state) => {
+            state.userJoinedNewRoom = true;
+            state.userSearchHasResult = false;
+            state.roomSearchHasResult = false;
+            state.roomSearchResults = [];      
+            state.userSearchResults = [];              
+        },
+        userFeedBack: (state, action) => {
+            state.hasError = true;
+            state.userFeedBack = action.payload.message;
         }
     }
 });
 
-export const {updateSearchResult} = searchBarSlice.actions;
-export const searchResults = state => state.searchBarSlice.searchResults;
+export const {updateSearchResult, restoreResults, userJoinedRoom, userFeedBack} = searchBarSlice.actions;
+export const hasRoomResult = state => state.searchBarSlice.roomSearchHasResult;
+export const hasUserResult = state => state.searchBarSlice.userSearchHasResult;
+export const userSearchResults = state => state.searchBarSlice.userSearchResults;
+export const roomSearchResults = state => state.searchBarSlice.roomSearchResults;
+export const userJoinedNewRoom = state => state.searchBarSlice.userJoinedNewRoom;
+export const userMessage = state => state.searchBarSlice.joinFeedBack;
+export const error = state => state.searchBarSlice.hasError;
 export default searchBarSlice.reducer;

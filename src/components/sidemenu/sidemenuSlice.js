@@ -39,7 +39,6 @@ const sideMenuSlice = createSlice({
         },
         setCurrentRoom: (state, action) =>{
             state.currentRoom = action.payload;
-            console.log(state.currentRoom)
         }
     },
     extraReducers: {

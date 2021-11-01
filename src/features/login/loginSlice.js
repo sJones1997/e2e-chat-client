@@ -45,7 +45,6 @@ const loginSlice = createSlice({
         },
         [submitLogin.fulfilled]: (state, action) => {
             state.isLoading = false;
-            console.log(action.payload)
             if(action.payload.status === 200){
                 state.hasError = false;
                 state.sessionActive = state.redirectRequired = true;

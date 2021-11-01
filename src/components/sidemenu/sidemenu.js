@@ -4,6 +4,7 @@ import AddRoom from '../addroom/addroom';
 import { getUserRooms, userRooms, errored, errorMessage, loading, setError, resetError, setCurrentRoom } from './sidemenuSlice';
 import { userLeft, roomDeleted } from '../roompanel/roomPanelSlice';
 import { newRoom } from '../addroom/addroomSlice';
+import { userJoinedNewRoom } from '../searchbar/searchbarSlice';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -21,17 +22,17 @@ export default function SideMenu(){
     const roomToAdd = useSelector(newRoom);
     const deletedRoom = useSelector(roomDeleted);
     const userLeftRoom = useSelector(userLeft);
+    const userJoined = useSelector(userJoinedNewRoom);
 
     useEffect(() => {
-        if(roomToAdd || deletedRoom || userLeftRoom){
+        if(roomToAdd || deletedRoom || userLeftRoom || userJoined){
             dispatch(getUserRooms());
         }
-    }, [roomToAdd, dispatch, deletedRoom, userLeftRoom]);
+    }, [roomToAdd, dispatch, deletedRoom, userLeftRoom, userJoined]);
 
     const handleModal = () => {
         const overlay = document.querySelector(".overlay");
         const modal = document.querySelector(".modal");
-        console.log(overlay.style.display, modal.style.display)
         if((!overlay.style.display || overlay.style.display === "none") && (!modal.style.display || modal.style.display === "none")){
             overlay.style.display = "block";
             modal.style.display = "flex";
@@ -42,10 +43,9 @@ export default function SideMenu(){
         }
     }
 
-    const joinRoom = (newRoom, roomId) => {
-        socket.emit("join-room", newRoom, roomId, (connected, message) => {
+    const moveRoom = (newRoom, roomId) => {
+        socket.emit("move-room", newRoom, roomId, (connected, message) => {
             if(connected){
-                console.log(connected)
                 const currentRoom = rooms.filter(e => {return e.roomId === roomId})
                 dispatch(setCurrentRoom(currentRoom[0]));       
                 document.querySelector('.selected').classList.remove("selected");
@@ -65,14 +65,14 @@ export default function SideMenu(){
                 <SearchBar />
             </div>
             <div className="current-chats">
-                <div className="new-room" onClick={handleModal}>
+                <div className="add-room room" onClick={handleModal}>
                     <h3>Create a new room</h3>
                 </div>
                 {
                     !(hasError && isLoading)
                     ?
                     rooms.map((e,i) => (
-                        <div className={i === 0 ? 'new-room selected' : 'new-room'} id={`room-${e.roomId}`} key={i} onClick={() => {joinRoom(e.name, e.roomId)}}>
+                        <div className={i === 0 ? 'room selected' : 'room'} id={`room-${e.roomId}`} key={i} onClick={() => {moveRoom(e.name, e.roomId)}}>
                             <h3>{e.name}</h3>
                         </div>
                     ))

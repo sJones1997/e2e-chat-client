@@ -19,7 +19,7 @@
     background: rgba(113, 178, 128, 0.25) !important;   
 }
 
-.side-menu-container .current-chats .new-room {
+.side-menu-container .current-chats .room {
     color:#565656;
     height:4.5em;
     font-size: 1.15em;
@@ -29,12 +29,12 @@
     border-bottom: 1px solid rgba(33, 33, 33, 0.15); 
 }
 
-.side-menu-container .current-chats .new-room:hover {
+.side-menu-container .current-chats .room:hover {
     background: rgba(255,255,255,0.75);
     cursor: pointer;
 }
 
-.side-menu-container .current-chats .new-room h3 {
+.side-menu-container .current-chats .room h3 {
     line-height: 1em;
     width:85%;
     user-select: none;

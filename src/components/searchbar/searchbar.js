@@ -1,64 +1,134 @@
-import {useEffect, useState} from 'react';
 import {socket} from '../../app/App';
-import {updateSearchResult, searchResults} from './searchbarSlice';
+import {
+    updateSearchResult, 
+    userSearchResults, 
+    roomSearchResults, 
+    hasUserResult, 
+    hasRoomResult, 
+    restoreResults, 
+    userJoinedRoom,
+    userFeedBack,
+    userMessage,
+    error
+} from './searchbarSlice';
 import './searchbar.css'
+import InfoBlock from '../infoblock/infoblock';
 import { useDispatch, useSelector } from 'react-redux';
 
 
 export default function SearchBar(){
 
     const dispatch = useDispatch();
-    const allSearchResults = useSelector(searchResults);
-    const [roomResults, setRoomsResults] = useState([]);
-    const [userResults, setUserResults] = useState('');
+    const userResults = useSelector(userSearchResults);
+    const userHasResult = useSelector(hasUserResult);
+    const roomResults = useSelector(roomSearchResults);
+    const roomHasResults = useSelector(hasRoomResult);
+    const hasError = useSelector(error);
+    const errorMsg = useSelector(userMessage);
 
     const handleSearch = (e) => {
         const searchTerm = e.target.value;
         if(searchTerm.length){
             socket.emit("search", searchTerm, (result) => {
                 if(result){
+
                     dispatch(updateSearchResult({result: result}));
                 }
             })
+        } else {
+            dispatch(restoreResults())
         }
-    };
+    }
 
-    useEffect(() => {
-        if(Object.keys(allSearchResults).length){
-            const keys = Object.keys(allSearchResults.result);
-            console.log(keys);
-            let roomResults;
-            let userResults;
-            for(let i = 0; i < keys.length; i ++){
-                if(keys[i] === "rooms"){
-                    if(typeof(allSearchResults.result[keys[i]].message) === 'string'){
-                        roomResults = [{name: allSearchResults.result[keys[i]].message}];
-                    }
-                    roomResults = allSearchResults.result[keys[i]].message;
+    const connectToUser = (username) => {
+        console.log(username);
+    }
+
+    const connectToRoom = (roomId, alreadyJoined) => {
+        if(!alreadyJoined){
+            socket.emit('join-room', roomId, (message, status) =>{
+                if(status){
+                    dispatch(userJoinedRoom());
+                    document.querySelector('#search-term').value = '';
+                } else {
+                    dispatch(userFeedBack({message: message}));
                 }
-            }
-            console.log(roomResults);
-            setRoomsResults(roomResults);
+            })
         }
-    }, [allSearchResults]);
+    }
 
     return (
         <div className="search-bar-container">
-            <input type="text" placeholder="Search for existing rooms or other users" onChange={(e) => {handleSearch(e)}}/>
-            <div>
+            <input type="text" id="search-term" placeholder="Search for existing rooms or other users" onChange={(e) => {handleSearch(e)}}/>
+            <div className="search-container" style={{'display' :(userHasResult || roomHasResults) ? 'block' : 'none'}}>
                 {
-                    roomResults.length
+                    (userHasResult || roomHasResults)
                     ?
-                    roomResults.map((e,i) => (
-                        
-                           <div className="room-result" key={i}>
-                               {e.name}
-                           </div>
-                        
-                    ))
+                    <div className="results">
+                        {
+                            userHasResult
+                            ?
+                            <div className="user-results-container">
+                                <div className="results-header">
+                                    <h2>Users:</h2>
+                                </div>
+                                <div className="user-results">
+                                    { userResults.map((e,i) => {
+                                    return (
+                                        <div className="user-result result" key={`user-${i}`} onClick={() => {connectToUser(e.username)}}>
+                                            <p>{e.username}</p>
+                                        </div>)
+                                    })  }                                
+                                </div>                             
+                            </div>
+                            :
+                            <div className="user-results-container">
+                                <div className="results-header">
+                                    <h2>Users:</h2>
+                                </div>
+                                <div className="no-user-result result">
+                                    <p>{userResults[0]}</p>                   
+                                </div>                             
+                            </div>                            
+                        }
+                        {
+                            roomHasResults
+                            ?
+                            <div className="room-results-container">
+                                <div className="results-header">
+                                    <h2>Rooms:</h2>
+                                </div>
+                                <div className="room-results">
+                                { roomResults.map((e, i) => {
+                                    return <div className={e.alreadyJoined ? 'joined room-result result' : 'room-result result'} key={`room-${i}`} onClick={() => {connectToRoom(e.id, e.alreadyJoined)}}>
+                                        <p>{e.name}</p>
+                                    </div>
+                                })}                                    
+                                </div>
+                            </div>
+                            :
+                            <div className="room-results-container">
+                                <div className="results-header">
+                                    <h2>Rooms:</h2>
+                                </div>
+                                <div className="no-room-result result">
+                                    <p>{roomResults[0]}</p>                               
+                                </div>
+                            </div>                            
+                }
+                    </div>
+                    :
+                    ''                    
+                }             
+            </div>          
+            <div className="error-component">
+            {
+                    (hasError)
+                    ?
+                    <InfoBlock message={errorMsg} error={hasError} />
                     :
                     ''
-                }
+            }                       
             </div>
         </div>
     )
