@@ -60,6 +60,7 @@ const sideMenuSlice = createSlice({
             }
         },
         [getUserRooms.rejected]: (state, action) => {
+            console.log(action.payload)
             state.hasError = true;
             state.errorMessage = action.payload.message;
         }            

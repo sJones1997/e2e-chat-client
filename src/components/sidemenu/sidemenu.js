@@ -42,6 +42,7 @@ export default function SideMenu(){
     const joinRoom = (newRoom, roomId) => {
         socket.emit("join-room", newRoom, roomId, (connected, message) => {
             if(connected){
+                console.log(connected)
                 const currentRoom = rooms.filter(e => {return e.roomId === roomId})
                 dispatch(setCurrentRoom(currentRoom[0]));       
                 document.querySelector('.selected').classList.remove("selected");

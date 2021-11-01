@@ -6,6 +6,7 @@ import sideMenuReducer from "../components/sidemenu/sidemenuSlice";
 import chatboxReducer from '../components/chatbox/chatboxSlice';
 import messageReducer from '../components/messages/messageSlice';
 import roomPanelReducer from '../components/roompanel/roomPanelSlice';
+import searchBarReducer from '../components/searchbar/searchbarSlice';
 
 
 const combinedReducer = combineReducers({
@@ -15,7 +16,8 @@ const combinedReducer = combineReducers({
     sideMenuSlice: sideMenuReducer,
     chatboxSlice: chatboxReducer,
     messageSlice: messageReducer,
-    roomPanelSlice: roomPanelReducer
+    roomPanelSlice: roomPanelReducer,
+    searchBarSlice: searchBarReducer    
 })
 
 const rootReducer = (state, action) => {
