@@ -16,6 +16,7 @@ export const getRoom = createAsyncThunk(
         const {status} = data;
         const json = await data.json();
         json['status'] = status;
+        console.log(json);
         return json;
     }
 )
@@ -39,18 +40,47 @@ export const leaveRoom = createAsyncThunk(
     }
 )
 
+export const deleteRoom = createAsyncThunk(
+    'roomPanelSlice/deleteRoom',
+    async (obj) => {
+        const {id} = obj;
+        console.log(id)
+        const data = await fetch(`${baseApi}/room/${id}`,{
+            method:'DELETE',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }            
+        })
+        const {status} = data;
+        const json = await data.json();
+        json['status'] = status;
+        return json;        
+    }
+)
+
 const roomPanelSlice = createSlice({
     name:'roomPanelSlice',
     initialState: {
         hasError: false,
         isLoading: false,
+        errorMessage: '',
         roomInfo: {},
-        userLeft: {},
+        userLeft: false,
         userPrompt: false,
-        userPromptMessage: ''           
+        userPromptMessage: '',
+        successMessage: '',
+        roomDeleted: false           
     },
     reducers: {
         restorePrompt: (state) => {
+            state.userPrompt = false;
+            state.userPromptMessage = '';
+        },
+        restoreSuccess: (state) => {
+            state.roomDeleted = false;
+            state.successMessage = '';
         }
     },    
     extraReducers: {
@@ -66,6 +96,7 @@ const roomPanelSlice = createSlice({
                 state.roomInfo = action.payload.message;
             } else {
                 state.hasError = true;
+                state.roomInfo = {};
                 state.errorMessage = action.payload.message;
             }
         }, 
@@ -79,19 +110,37 @@ const roomPanelSlice = createSlice({
         [leaveRoom.fulfilled]: (state, action) => {
             state.isLoading = false;
             if(action.payload.status === 200){
+                console.log(action.payload.prompt)
                 if(action.payload.prompt){
                     state.userPrompt =  true;
                     state.userPromptMessage = action.payload.prompt.message;
-                    return;
+                } else {
+                    state.successMessage = action.payload.message
+                    state.userLeft = true;                    
                 }
-                state.successMessage = action.payload.message
-                state.userLeft = true;
+                console.log(state.userLeft);
             }
         },
         [leaveRoom.rejected]: (state, action) => {
             state.hasError = true;
             state.isLoading = false;
-        }           
+        },
+        [deleteRoom.pending]: (state, action) => {
+            state.hasError = false;
+            state.isLoading = true;            
+        },
+        [deleteRoom.fulfilled]: (state, action) => {
+            state.hasError = false;
+            state.isLoading = true;     
+            if(action.payload.status === 200){
+                state.successMessage = action.payload.message;
+                state.roomDeleted = true;
+            }       
+        },
+        [deleteRoom.rejected]: (state, action) => {
+            state.hasError = true;
+            state.isLoading = false;            
+        },                         
     }    
 })
 
@@ -99,5 +148,9 @@ export const roomInfo = state => state.roomPanelSlice.roomInfo;
 export const userPrompt = state => state.roomPanelSlice.userPrompt;
 export const userPromptMessage = state => state.roomPanelSlice.userPromptMessage;
 export const userLeft = state => state.roomPanelSlice.userLeft;
-export const {restorePrompt} = roomPanelSlice.actions;
+export const erroed = state => state.roomPanelSlice.hasError;
+export const errorMessage = state => state.roomPanelSlice.errorMessage;
+export const roomDeleted = state => state.roomPanelSlice.roomDeleted;
+export const successMessage = state => state.roomPanelSlice.successMessage;
+export const {restorePrompt, restoreSuccess} = roomPanelSlice.actions;
 export default roomPanelSlice.reducer;

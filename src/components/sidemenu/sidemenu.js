@@ -2,6 +2,7 @@ import './sidemenu.css';
 import SearchBar from '../searchbar/searchbar';
 import AddRoom from '../addroom/addroom';
 import { getUserRooms, userRooms, errored, errorMessage, loading, setError, resetError, setCurrentRoom } from './sidemenuSlice';
+import { userLeft, roomDeleted } from '../roompanel/roomPanelSlice';
 import { newRoom } from '../addroom/addroomSlice';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -18,12 +19,14 @@ export default function SideMenu(){
     const errorMsg = useSelector(errorMessage);
     const isLoading = useSelector(loading);
     const roomToAdd = useSelector(newRoom);
+    const deletedRoom = useSelector(roomDeleted);
+    const userLeftRoom = useSelector(userLeft);
 
     useEffect(() => {
-        if(roomToAdd){
+        if(roomToAdd || deletedRoom || userLeftRoom){
             dispatch(getUserRooms());
         }
-    }, [roomToAdd, dispatch])
+    }, [roomToAdd, dispatch, deletedRoom, userLeftRoom]);
 
     const handleModal = () => {
         const overlay = document.querySelector(".overlay");

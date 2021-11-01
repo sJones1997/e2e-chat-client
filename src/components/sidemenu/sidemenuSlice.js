@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { baseApi } from "../../app/App";
-import { currentUserRoom } from "../chatbox/chatboxSlice";
 
 export const getUserRooms = createAsyncThunk(
     'sideMenuSlice/getUserRooms',
@@ -54,6 +53,8 @@ const sideMenuSlice = createSlice({
                 if(!(action.payload.message.length === 1 && action.payload.message[0].roomId === null)){
                     state.userRooms = action.payload.message;
                     state.currentRoom = state.userRooms[0];
+                } else {
+                    state.userRooms = []
                 }
             } else {
                 state.hasError = true;
