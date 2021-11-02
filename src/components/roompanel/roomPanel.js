@@ -12,13 +12,15 @@ import {
     errorMessage, 
     roomDeleted, 
     successMessage,
-    restoreSuccess } 
+    restoreSuccess,
+    updateRoomInfo } 
 from './roomPanelSlice';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import InfoBlock from '../infoblock/infoblock';
 import { useState } from 'react';
+import { socket } from '../../app/App';
 
 export default function RoomPanel(){
 
@@ -55,6 +57,18 @@ export default function RoomPanel(){
     const deleteRoomHandle = () => {
         dispatch(deleteRoom({id: currentRoomInfo.id}))
     }    
+
+    useEffect(() => {
+        socket.once("user-joined", (data) => {
+            if(data){
+                dispatch(updateRoomInfo());            
+            }
+        })
+    }, []);
+
+    useEffect(() => {
+
+    }, [])
 
     const leaveRoomHandle = () => {
         dispatch(leaveRoom({id: currentRoomInfo.id}))   
