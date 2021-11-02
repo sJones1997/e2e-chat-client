@@ -9,18 +9,6 @@ import RoomPanel from '../../components/roompanel/roomPanel';
 
 export default function Chatroom(){
 
-    // useEffect(() => {
-    //     socket.connect();
-    //     socket.emit("rooms", "my rooms");   
-    //     socket.on("rooms" , data => {
-    //         console.log("")
-    //         console.log(data)
-    //     })
-    //     socket.on("connect_error", (err) => {
-    //         console.log(err.data)
-    //     })
-    // }, [])
-
     return (
         <div className="chatroom-container">
             <div className="chatroom">

@@ -38,8 +38,10 @@ const sideMenuSlice = createSlice({
             state.errorMessage = '';
         },
         setCurrentRoom: (state, action) =>{
+            console.log(action.payload);
             state.currentRoom = action.payload;
-        }
+        },
+
     },
     extraReducers: {
         [getUserRooms.pending]: (state, action) => {
@@ -60,7 +62,6 @@ const sideMenuSlice = createSlice({
             }
         },
         [getUserRooms.rejected]: (state, action) => {
-            console.log(action.payload)
             state.hasError = true;
             state.errorMessage = action.payload.message;
         }            
