@@ -1,10 +1,19 @@
 import './sidemenu.css';
 import SearchBar from '../searchbar/searchbar';
 import AddRoom from '../addroom/addroom';
-import { getUserRooms, userRooms, errored, errorMessage, loading, setError, resetError, setCurrentRoom } from './sidemenuSlice';
-import { userLeft, roomDeleted } from '../roompanel/roomPanelSlice';
+import { 
+    getUserRooms, 
+    userRooms, 
+    errored, 
+    errorMessage, 
+    loading, 
+    setError, 
+    resetError, 
+    setCurrentRoom 
+} from './sidemenuSlice';
+import { userLeft, roomDeleted, restoreUserRoom } from '../roompanel/roomPanelSlice';
 import { newRoom } from '../addroom/addroomSlice';
-import { userJoinedNewRoom } from '../searchbar/searchbarSlice';
+import { userJoinedNewRoom, restoreUserJoined } from '../searchbar/searchbarSlice';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -23,12 +32,6 @@ export default function SideMenu(){
     const deletedRoom = useSelector(roomDeleted);
     const userLeftRoom = useSelector(userLeft);
     const userJoined = useSelector(userJoinedNewRoom);
-
-    useEffect(() => {
-        if(roomToAdd || deletedRoom || userLeftRoom || userJoined){
-            dispatch(getUserRooms());
-        }
-    }, [roomToAdd, dispatch, deletedRoom, userLeftRoom, userJoined]);
 
     const handleModal = () => {
         const overlay = document.querySelector(".overlay");
@@ -49,7 +52,7 @@ export default function SideMenu(){
                 const currentRoom = rooms.filter(e => {return e.roomId === roomId})
                 dispatch(setCurrentRoom(currentRoom[0]));       
                 document.querySelector('.selected').classList.remove("selected");
-                document.querySelector(`#room-${roomId}`).classList.add("selected");  
+                document.querySelector(`#room-${roomId}-${newRoom}`).classList.add("selected");  
             } else {
                 dispatch(setError({'message': message}));
                 setTimeout(() => {
@@ -59,20 +62,54 @@ export default function SideMenu(){
         });
     }
 
+    useEffect(() => {
+        if(roomToAdd){
+            dispatch(getUserRooms());
+        }
+    }, [roomToAdd, dispatch]);
+
+    useEffect(() => {
+        if(deletedRoom){
+            dispatch(getUserRooms());
+        }
+    }, [deletedRoom, dispatch]);
+
+    useEffect(() => {
+        if(userJoined){
+            dispatch(getUserRooms());
+            dispatch(restoreUserJoined());
+        }
+    }, [userJoined, dispatch]);
+
+    useEffect(() => {
+        if(userLeftRoom){
+            dispatch(getUserRooms());     
+            const rooms = document.querySelectorAll('.room');
+            if(rooms.length){
+                let id = rooms[0].getAttribute('id');
+                id = id.split("-");
+                const roomId = id[1];
+                const roomName = id[2];
+                moveRoom(roomName, roomId);  
+                dispatch(restoreUserRoom())              
+            }
+        }
+    }, [userLeftRoom, moveRoom, dispatch])    
+
     return (
         <div className="side-menu-container">
             <div className="search-bar">
                 <SearchBar />
             </div>
             <div className="current-chats">
-                <div className="add-room room" onClick={handleModal}>
+                <div className="add-room" onClick={handleModal}>
                     <h3>Create a new room</h3>
                 </div>
                 {
                     !(hasError && isLoading)
                     ?
                     rooms.map((e,i) => (
-                        <div className={i === 0 ? 'room selected' : 'room'} id={`room-${e.roomId}`} key={i} onClick={() => {moveRoom(e.name, e.roomId)}}>
+                        <div className={i === 0 ? 'room selected' : 'room'} id={`room-${e.roomId}-${e.name}`} key={i} onClick={() => {moveRoom(e.name, e.roomId)}}>
                             <h3>{e.name}</h3>
                         </div>
                     ))

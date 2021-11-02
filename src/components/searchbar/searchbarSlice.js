@@ -4,10 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const searchBarSlice = createSlice({
     name: 'searchBarSlice',
     initialState: {
-        userSearchResults: [],
         roomSearchResults: [],
         roomSearchHasResult: false,
-        userSearchHasResult: false,
         userJoinedNewRoom: false,
         joinFeedBack: '',
         hasError: false
@@ -20,14 +18,7 @@ const searchBarSlice = createSlice({
             } else {
                 state.roomSearchHasResult = true;
                 state.roomSearchResults = action.payload.result.rooms.message;                
-            }
-            if(!action.payload.result.users.status){
-                state.userSearchHasResult = false;
-                state.userSearchResults = [action.payload.result.users.message];                
-            } else {
-                state.userSearchHasResult = true;
-                state.userSearchResults = action.payload.result.users.message;                
-            }            
+            }          
         },
         restoreResults: (state) => {
             state.roomSearchHasResult = false;
@@ -42,6 +33,9 @@ const searchBarSlice = createSlice({
             state.roomSearchResults = [];      
             state.userSearchResults = [];              
         },
+        restoreUserJoined: (state) => {
+            state.userJoinedNewRoom = false;
+        },
         userFeedBack: (state, action) => {
             state.hasError = true;
             state.userFeedBack = action.payload.message;
@@ -49,7 +43,7 @@ const searchBarSlice = createSlice({
     }
 });
 
-export const {updateSearchResult, restoreResults, userJoinedRoom, userFeedBack} = searchBarSlice.actions;
+export const {updateSearchResult, restoreResults, userJoinedRoom, userFeedBack, restoreUserJoined} = searchBarSlice.actions;
 export const hasRoomResult = state => state.searchBarSlice.roomSearchHasResult;
 export const hasUserResult = state => state.searchBarSlice.userSearchHasResult;
 export const userSearchResults = state => state.searchBarSlice.userSearchResults;

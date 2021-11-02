@@ -82,6 +82,9 @@ const roomPanelSlice = createSlice({
         },
         updateRoomInfo: (state) => {
             state.roomInfo.roomCapacity++;
+        },
+        restoreUserRoom: (state) => {
+            state.userLeft = false;
         }
     },    
     extraReducers: {
@@ -152,5 +155,5 @@ export const erroed = state => state.roomPanelSlice.hasError;
 export const errorMessage = state => state.roomPanelSlice.errorMessage;
 export const roomDeleted = state => state.roomPanelSlice.roomDeleted;
 export const successMessage = state => state.roomPanelSlice.successMessage;
-export const {restorePrompt, restoreSuccess, updateRoomInfo} = roomPanelSlice.actions;
+export const {restorePrompt, restoreSuccess, updateRoomInfo, restoreUserRoom} = roomPanelSlice.actions;
 export default roomPanelSlice.reducer;

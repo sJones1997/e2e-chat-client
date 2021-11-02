@@ -66,19 +66,8 @@ export default function RoomPanel(){
         })
     }, []);
 
-    useEffect(() => {
-
-    }, [])
-
     const leaveRoomHandle = () => {
-        dispatch(leaveRoom({id: currentRoomInfo.id}))   
-        .then(() => {
-            const rooms = document.querySelectorAll(".room");
-            if(rooms.length > 1){
-                document.querySelector(".selected").classList.remove("selected");
-                rooms[1].classList.add("selected");
-            }            
-        })
+        dispatch(leaveRoom({id: currentRoomInfo.id}));   
     }
 
     useEffect(() => {
@@ -90,7 +79,7 @@ export default function RoomPanel(){
     }, [promptUser, showModal, hideModal])
 
     useEffect(() => {
-        if(Object.keys(currentUserRoom).length){
+        if(currentUserRoom){
             dispatch(getRoom({id: currentUserRoom.roomId}));
             setShowPanel(true)
         } else {

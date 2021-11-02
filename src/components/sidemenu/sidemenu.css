@@ -19,7 +19,7 @@
     background: rgba(113, 178, 128, 0.25) !important;   
 }
 
-.side-menu-container .current-chats .room {
+.side-menu-container .current-chats .room, .side-menu-container .current-chats .add-room {
     color:#565656;
     height:4.5em;
     font-size: 1.15em;
@@ -34,7 +34,7 @@
     cursor: pointer;
 }
 
-.side-menu-container .current-chats .room h3 {
+.side-menu-container .current-chats .room h3, .side-menu-container .current-chats .add-room h3 {
     line-height: 1em;
     width:85%;
     user-select: none;
