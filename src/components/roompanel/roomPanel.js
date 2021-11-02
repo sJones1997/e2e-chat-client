@@ -58,6 +58,13 @@ export default function RoomPanel(){
 
     const leaveRoomHandle = () => {
         dispatch(leaveRoom({id: currentRoomInfo.id}))   
+        .then(() => {
+            const rooms = document.querySelectorAll(".room");
+            if(rooms.length > 1){
+                document.querySelector(".selected").classList.remove("selected");
+                rooms[1].classList.add("selected");
+            }            
+        })
     }
 
     useEffect(() => {
