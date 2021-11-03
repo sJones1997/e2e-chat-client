@@ -137,6 +137,7 @@ const roomPanelSlice = createSlice({
             if(action.payload.status === 200){
                 state.successMessage = action.payload.message;
                 state.roomDeleted = true;
+                state.userLeft = true;                 
             }       
         },
         [deleteRoom.rejected]: (state, action) => {

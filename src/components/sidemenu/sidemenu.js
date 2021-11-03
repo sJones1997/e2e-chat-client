@@ -19,7 +19,6 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import InfoBlock from '../infoblock/infoblock';
 import { socket } from '../../app/App';
-import { currentUserRoom } from '../chatbox/chatboxSlice';
 
 export default function SideMenu(){
 
@@ -83,8 +82,8 @@ export default function SideMenu(){
     }, [userJoined, dispatch]);
 
     useEffect(() => {
+        console.log(userLeftRoom);        
         if(userLeftRoom){
-            console.log(userLeftRoom);
             dispatch(getUserRooms()); 
             dispatch(restoreUserRoom());                   
             const rooms = document.querySelectorAll('.room');
@@ -95,6 +94,7 @@ export default function SideMenu(){
                 const roomName = id[2];
                 moveRoom(roomName, roomId)                   
             } else {
+                console.log("here")
                 dispatch(setCurrentRoom({}));
             }
         }
