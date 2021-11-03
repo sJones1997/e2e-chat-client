@@ -13,6 +13,7 @@ import {
 import './searchbar.css'
 import InfoBlock from '../infoblock/infoblock';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 
 
 export default function SearchBar(){
@@ -22,6 +23,7 @@ export default function SearchBar(){
     const roomHasResults = useSelector(hasRoomResult);
     const hasError = useSelector(error);
     const errorMsg = useSelector(userMessage);
+    const [joinUser, setJoinUser] = useState({});
 
     const handleSearch = (e) => {
         dispatch(verifyUser());
@@ -37,19 +39,21 @@ export default function SearchBar(){
         }
     }
 
-    const connectToRoom = (roomId, alreadyJoined) => {
+    useEffect(() => {
         dispatch(verifyUser());
-        if(!alreadyJoined){
-            socket.emit('join-room', roomId, (message, status) =>{
-                if(status){
-                    dispatch(userJoinedRoom());
-                    document.querySelector('#search-term').value = '';
-                } else {
-                    dispatch(userFeedBack({message: message}));
-                }
-            })
+        if(Object.keys(joinUser).length){
+            if(!joinUser.joined){
+                socket.emit('join-room', joinUser.id, (message, status) =>{
+                    if(status){
+                        dispatch(userJoinedRoom());
+                        document.querySelector('#search-term').value = '';
+                    } else {
+                        dispatch(userFeedBack({message: message}));
+                    }
+                })
+            }            
         }
-    }
+    }, [joinUser])
 
     return (
         <div className="search-bar-container">
@@ -68,7 +72,7 @@ export default function SearchBar(){
                                 </div>
                                 <div className="room-results">
                                 { roomResults.map((e, i) => {
-                                    return <div className={e.alreadyJoined ? 'joined room-result result' : 'room-result result'} key={`room-${i}`} onClick={() => {connectToRoom(e.id, e.alreadyJoined)}}>
+                                    return <div className={e.alreadyJoined ? 'joined room-result result' : 'room-result result'} key={`room-${i}`} onClick={() => {setJoinUser({id: e.id, joined: e.alreadyJoined})}}>
                                         <p>{e.name}</p>
                                     </div>
                                 })}                                    
