@@ -1,5 +1,6 @@
 import './roomPanel.css';
 import {currentRoom} from '../sidemenu/sidemenuSlice';
+import { verifyUser } from '../../features/chatroom/chatroomSlice';
 import { 
     restorePrompt,
     leaveRoom, 
@@ -54,6 +55,7 @@ export default function RoomPanel(){
     }    
 
     const deleteRoomHandle = () => {
+        dispatch(verifyUser());
         dispatch(deleteRoom({id: currentRoomInfo.id}))
     }    
 
@@ -66,6 +68,7 @@ export default function RoomPanel(){
     }, []);
 
     const leaveRoomHandle = () => {
+        dispatch(verifyUser());
         dispatch(leaveRoom({id: currentRoomInfo.id}));   
     }
 
@@ -79,6 +82,7 @@ export default function RoomPanel(){
 
     useEffect(() => {
         if(Object.entries(currentUserRoom).length){
+            dispatch(verifyUser());
             dispatch(getRoom({id: currentUserRoom.roomId}));
             setShowPanel(true)
         } else {

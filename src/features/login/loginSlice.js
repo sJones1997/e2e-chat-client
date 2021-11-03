@@ -35,8 +35,6 @@ const loginSlice = createSlice({
     initialState:{
         isLoading: false,
         hasError: false,
-        sessionActive: false,
-        redirectRequired: false,
         errorMessage: ''
     },
     extraReducers: {
@@ -47,7 +45,6 @@ const loginSlice = createSlice({
             state.isLoading = false;
             if(action.payload.status === 200){
                 state.hasError = false;
-                state.sessionActive = state.redirectRequired = true;
             } else {
                 state.hasError = true;
                 state.errorMessage = action.payload.message;

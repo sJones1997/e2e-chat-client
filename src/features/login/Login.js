@@ -1,10 +1,13 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { submitLogin, errorMessage, errored } from "./loginSlice";
+import { useHistory } from "react-router";
+import { useState, useEffect } from "react";
+import {verifyUser, userSignedIn} from '../chatroom/chatroomSlice';
+import { submitLogin, errorMessage, errored, session } from "./loginSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import GoogleIcon from "../../components/googleicon/GoogleIcon";
 import InfoBlock from "../../components/infoblock/infoblock";
+import { Link } from "react-router-dom";
+
 
 export default function Login(){
 
@@ -12,11 +15,26 @@ export default function Login(){
     const [password, setPassword] = useState("");
     const errorMsg = useSelector(errorMessage);
     const hasError = useSelector(errored);
+    const userAuthenticated = useSelector(userSignedIn);
+    const history = useHistory();    
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(verifyUser());
+    }, [])
+
+    useEffect(() => {
+        if(userAuthenticated){
+            history.push('/');
+        }
+    }, [userAuthenticated]);    
 
     const handleSubmission = (e) => {
         e.preventDefault();
-        dispatch(submitLogin({username: username, password: password}));
+        dispatch(submitLogin({username: username, password: password}))
+        .then(() => {
+            dispatch(verifyUser());            
+        })
     }
 
     return (    

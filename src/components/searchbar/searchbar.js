@@ -1,4 +1,5 @@
 import {socket} from '../../app/App';
+import { verifyUser } from '../../features/chatroom/chatroomSlice';
 import {
     updateSearchResult, 
     roomSearchResults, 
@@ -23,11 +24,11 @@ export default function SearchBar(){
     const errorMsg = useSelector(userMessage);
 
     const handleSearch = (e) => {
+        dispatch(verifyUser());
         const searchTerm = e.target.value;
         if(searchTerm.length){
             socket.emit("search", searchTerm, (result) => {
                 if(result){
-
                     dispatch(updateSearchResult({result: result}));
                 }
             })
@@ -37,6 +38,7 @@ export default function SearchBar(){
     }
 
     const connectToRoom = (roomId, alreadyJoined) => {
+        dispatch(verifyUser());
         if(!alreadyJoined){
             socket.emit('join-room', roomId, (message, status) =>{
                 if(status){

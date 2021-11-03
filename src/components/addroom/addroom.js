@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { verifyUser } from '../../features/chatroom/chatroomSlice';
 import { 
     createNewRoom, 
     errorMessage, 
@@ -29,6 +30,7 @@ export default function AddRoom(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        dispatch(verifyUser());
         dispatch(createNewRoom({newRoomName: newRoomName, newRoomLimit: newRoomLimit}));
         hideModal()
     }

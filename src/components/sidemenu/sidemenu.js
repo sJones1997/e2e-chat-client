@@ -1,4 +1,5 @@
 import './sidemenu.css';
+import { verifyUser } from '../../features/chatroom/chatroomSlice';
 import SearchBar from '../searchbar/searchbar';
 import AddRoom from '../addroom/addroom';
 import { 
@@ -61,42 +62,52 @@ export default function SideMenu(){
             }                   
         });
     }
-
+    
     useEffect(() => {
         if(roomToAdd){
-            dispatch(getUserRooms());
+            dispatch(verifyUser())
+            .then(() => {
+                dispatch(getUserRooms());
+            })
         }
     }, [roomToAdd, dispatch]);
 
     useEffect(() => {
         if(deletedRoom){
-            dispatch(getUserRooms());
+            dispatch(verifyUser())
+            .then(() => {
+                dispatch(getUserRooms());                
+            })
         }
     }, [deletedRoom, dispatch]);
 
     useEffect(() => {
         if(userJoined){
-            dispatch(getUserRooms());
-            dispatch(restoreUserJoined());
+            dispatch(verifyUser())
+            .then(() => {
+                dispatch(getUserRooms());
+                dispatch(restoreUserJoined());
+            })
         }
     }, [userJoined, dispatch]);
 
-    useEffect(() => {
-        console.log(userLeftRoom);        
+    useEffect(() => {    
         if(userLeftRoom){
-            dispatch(getUserRooms()); 
-            dispatch(restoreUserRoom());                   
-            const rooms = document.querySelectorAll('.room');
-            if(rooms.length > 1){
-                let id = rooms[0].getAttribute('id');
-                id = id.split("-");
-                const roomId = id[1];
-                const roomName = id[2];
-                moveRoom(roomName, roomId)                   
-            } else {
-                console.log("here")
-                dispatch(setCurrentRoom({}));
-            }
+            dispatch(verifyUser())
+            .then(() => {
+                dispatch(getUserRooms()); 
+                dispatch(restoreUserRoom());                   
+                const rooms = document.querySelectorAll('.room');
+                if(rooms.length > 1){
+                    let id = rooms[0].getAttribute('id');
+                    id = id.split("-");
+                    const roomId = id[1];
+                    const roomName = id[2];
+                    moveRoom(roomName, roomId)                   
+                } else {
+                    dispatch(setCurrentRoom({}));
+                }
+            })
         }
     }, [userLeftRoom, moveRoom, dispatch])    
 

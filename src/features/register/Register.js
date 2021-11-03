@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useHistory } from "react-router";
+import { useState, useEffect } from "react";
 import './register.css';
+import {verifyUser, userSignedIn} from '../chatroom/chatroomSlice';
 import { submitRegistration, errored, errorMessage } from "./registerSlice";
 import { useDispatch } from "react-redux";
 import InfoBlock from "../../components/infoblock/infoblock";
@@ -14,12 +16,27 @@ export default function Register(){
     const errorMsg = useSelector(errorMessage);
     const hasError = useSelector(errored);
     const [confirmPassword, setConfirmPassword] = useState("");
+    const userAuthenticated = useSelector(userSignedIn);
+    const history = useHistory();    
     const dispatch = useDispatch();
 
     const handleSubmission = (e) => {
         e.preventDefault();
-        dispatch(submitRegistration({username: username, password: password, confirmPassword: confirmPassword}));
+        dispatch(submitRegistration({username: username, password: password, confirmPassword: confirmPassword}))
+        .then(() => {
+            verifyUser();
+        })
     }
+
+    useEffect(() => {
+        dispatch(verifyUser());
+    }, [])    
+
+    useEffect(() => {
+        if(userAuthenticated){
+            history.push('/');
+        }
+    }, [userAuthenticated]);        
     
     return (
         <div className="register-container">

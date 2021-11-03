@@ -1,13 +1,30 @@
-// import { useEffect } from 'react';
+import { useEffect } from 'react';
 // import { socket } from '../../app/App';
-
+import {verifyUser, userSignedIn} from './chatroomSlice';
 import './chatroom.css';
 import ChatBox from '../../components/chatbox/chatbox';
 import Messages from '../../components/messages/messages';
 import SideMenu from '../../components/sidemenu/sidemenu';
 import RoomPanel from '../../components/roompanel/roomPanel';
+import { useDispatch, useSelector} from 'react-redux';
+import { useHistory } from 'react-router';
 
 export default function Chatroom(){
+    
+    const dispatch = useDispatch();
+    const userAuthenticated = useSelector(userSignedIn);
+    const history = useHistory();
+    
+    useEffect(() => {
+        dispatch(verifyUser())
+    }, [])
+
+    useEffect(() => {
+        console.log(userAuthenticated);
+        if(!userAuthenticated){
+            history.push('/login');
+        }
+    }, [userAuthenticated])
 
     return (
         <div className="chatroom-container">

@@ -1,4 +1,5 @@
 import { configureStore, applyMiddleware, combineReducers } from "@reduxjs/toolkit";
+import chatroomReducer from '../features/chatroom/chatroomSlice';
 import registerReducer from '../features/register/registerSlice';
 import loginReducer from '../features/login/loginSlice';
 import addRoomReducer from '../components/addroom/addroomSlice';
@@ -8,7 +9,6 @@ import messageReducer from '../components/messages/messageSlice';
 import roomPanelReducer from '../components/roompanel/roomPanelSlice';
 import searchBarReducer from '../components/searchbar/searchbarSlice';
 
-
 const combinedReducer = combineReducers({
     registerSlice: registerReducer,
     loginSlice: loginReducer,
@@ -17,7 +17,8 @@ const combinedReducer = combineReducers({
     chatboxSlice: chatboxReducer,
     messageSlice: messageReducer,
     roomPanelSlice: roomPanelReducer,
-    searchBarSlice: searchBarReducer    
+    searchBarSlice: searchBarReducer,
+    chatroomSlice: chatroomReducer    
 })
 
 const rootReducer = (state, action) => {
