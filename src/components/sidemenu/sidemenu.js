@@ -19,6 +19,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import InfoBlock from '../infoblock/infoblock';
 import { socket } from '../../app/App';
+import { currentUserRoom } from '../chatbox/chatboxSlice';
 
 export default function SideMenu(){
 
@@ -49,10 +50,10 @@ export default function SideMenu(){
     const moveRoom = (newRoom, roomId) => {
         socket.emit("move-room", newRoom, roomId, (connected, message) => {
             if(connected){
-                const currentRoom = rooms.filter(e => {return e.roomId === roomId})
+                const currentRoom = rooms.filter(e => {return e.roomId === parseInt(roomId)})
                 dispatch(setCurrentRoom(currentRoom[0]));       
                 document.querySelector('.selected').classList.remove("selected");
-                document.querySelector(`#room-${roomId}-${newRoom}`).classList.add("selected");  
+                document.querySelector(`#room-${roomId}-${newRoom}`).classList.add("selected"); 
             } else {
                 dispatch(setError({'message': message}));
                 setTimeout(() => {
@@ -83,15 +84,18 @@ export default function SideMenu(){
 
     useEffect(() => {
         if(userLeftRoom){
-            dispatch(getUserRooms());     
+            console.log(userLeftRoom);
+            dispatch(getUserRooms()); 
+            dispatch(restoreUserRoom());                   
             const rooms = document.querySelectorAll('.room');
-            if(rooms.length){
+            if(rooms.length > 1){
                 let id = rooms[0].getAttribute('id');
                 id = id.split("-");
                 const roomId = id[1];
                 const roomName = id[2];
-                moveRoom(roomName, roomId);  
-                dispatch(restoreUserRoom())              
+                moveRoom(roomName, roomId)                   
+            } else {
+                dispatch(setCurrentRoom({}));
             }
         }
     }, [userLeftRoom, moveRoom, dispatch])    

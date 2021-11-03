@@ -85,7 +85,7 @@ const roomPanelSlice = createSlice({
         },
         restoreUserRoom: (state) => {
             state.userLeft = false;
-        }
+        },
     },    
     extraReducers: {
         [getRoom.pending]: (state, action) => {
@@ -98,7 +98,6 @@ const roomPanelSlice = createSlice({
             if(action.payload.status === 200){
                 state.hasError = false;
                 state.roomInfo = action.payload.message;
-                console.log(state.roomInfo)
             } else {
                 state.hasError = true;
                 state.roomInfo = {};

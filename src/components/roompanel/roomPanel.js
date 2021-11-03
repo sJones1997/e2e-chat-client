@@ -78,7 +78,7 @@ export default function RoomPanel(){
     }, [promptUser, showModal, hideModal])
 
     useEffect(() => {
-        if(currentUserRoom){
+        if(Object.entries(currentUserRoom).length){
             dispatch(getRoom({id: currentUserRoom.roomId}));
             setShowPanel(true)
         } else {
