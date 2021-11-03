@@ -68,7 +68,6 @@ export const logout = createAsyncThunk(
         const {status} = data;
         const json = await data.json();
         json['status'] = status;
-        console.log(json);
         return json;
     }
 )

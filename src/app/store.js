@@ -22,7 +22,8 @@ const combinedReducer = combineReducers({
 })
 
 const rootReducer = (state, action) => {
-    if(action.type === 'roomPanelSlice/logout'){
+    console.log(action.type);
+    if(action.type === 'roomPanelSlice/restoreState'){
         return combinedReducer(undefined, action);
     }
     return combinedReducer(state, action);
