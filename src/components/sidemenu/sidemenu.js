@@ -10,7 +10,8 @@ import {
     loading, 
     setError, 
     resetError, 
-    setCurrentRoom 
+    setCurrentRoom,
+    currentRoom 
 } from './sidemenuSlice';
 import { userLeft, roomDeleted, restoreUserRoom } from '../roompanel/roomPanelSlice';
 import { userJoinedNewRoom, restoreUserJoined } from '../searchbar/searchbarSlice';
@@ -33,6 +34,7 @@ export default function SideMenu(){
     const deletedRoom = useSelector(roomDeleted);
     const userLeftRoom = useSelector(userLeft);
     const userJoined = useSelector(userJoinedNewRoom);
+    const currentUserRoom = useSelector(currentRoom);
 
     const handleModal = () => {
         const overlay = document.querySelector(".overlay");
@@ -50,8 +52,8 @@ export default function SideMenu(){
     const moveRoom = (newRoom, roomId) => {
         socket.emit("move-room", newRoom, roomId, (connected, message) => {
             if(connected){
-                const currentRoom = rooms.filter(e => {return e.roomId === parseInt(roomId)})
-                dispatch(setCurrentRoom(currentRoom[0]));       
+                const newCurrentRoom = rooms.filter(e => {return e.roomId === parseInt(roomId)})
+                dispatch(setCurrentRoom(newCurrentRoom[0]));       
                 document.querySelector('.selected').classList.remove("selected");
                 document.querySelector(`#room-${roomId}-${newRoom}`).classList.add("selected"); 
             } else {
@@ -102,8 +104,13 @@ export default function SideMenu(){
                     let id = rooms[0].getAttribute('id');
                     id = id.split("-");
                     const roomId = id[1];
-                    const roomName = id[2];
-                    moveRoom(roomName, roomId)                   
+                    const roomName = id[2];                    
+                    if(roomId === currentUserRoom.roomId && rooms.length > 1){
+                        moveRoom(roomName, roomId) 
+                    } else {
+                        dispatch(setCurrentRoom({}));
+                    }
+                  
                 } else {
                     dispatch(setCurrentRoom({}));
                 }
