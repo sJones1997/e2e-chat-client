@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { createNewRoom, errorMessage, errored, resetErrorStatus } from './addroomSlice';
+import { 
+    createNewRoom, 
+    errorMessage, 
+    errored, 
+    resetErrorStatus 
+} from './addroomSlice';
 import './addroom.css';
 import { useSelector } from 'react-redux';
 import InfoBlock from '../infoblock/infoblock';
@@ -8,7 +13,7 @@ import InfoBlock from '../infoblock/infoblock';
 export default function AddRoom(){
 
     const [newRoomName, setNewRoomName] = useState("");
-    const [newRoomLimit, setNewRoomLimit] = useState(undefined);
+    const [newRoomLimit, setNewRoomLimit] = useState(2);
 
     const dispatch = useDispatch();
 

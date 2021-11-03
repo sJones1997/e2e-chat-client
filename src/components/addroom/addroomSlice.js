@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { baseApi } from "../../app/App";
 
-
 export const createNewRoom = createAsyncThunk(
     'addRoomSlice/createNewRoom',
     async (obj) => {

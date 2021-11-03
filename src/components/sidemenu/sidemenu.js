@@ -12,8 +12,8 @@ import {
     setCurrentRoom 
 } from './sidemenuSlice';
 import { userLeft, roomDeleted, restoreUserRoom } from '../roompanel/roomPanelSlice';
-import { newRoom } from '../addroom/addroomSlice';
 import { userJoinedNewRoom, restoreUserJoined } from '../searchbar/searchbarSlice';
+import { newRoom } from '../addroom/addroomSlice';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
