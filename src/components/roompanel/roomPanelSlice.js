@@ -58,6 +58,21 @@ export const deleteRoom = createAsyncThunk(
     }
 )
 
+export const logout = createAsyncThunk(
+    'roomPanelSlice/logout',
+    async () => {
+        const data = await fetch(`${baseApi}/auth/logout`, {
+            method: 'GET',
+            credentials: 'include'
+        });
+        const {status} = data;
+        const json = await data.json();
+        json['status'] = status;
+        console.log(json);
+        return json;
+    }
+)
+
 const roomPanelSlice = createSlice({
     name:'roomPanelSlice',
     initialState: {
@@ -69,7 +84,8 @@ const roomPanelSlice = createSlice({
         userPrompt: false,
         userPromptMessage: '',
         successMessage: '',
-        roomDeleted: false           
+        roomDeleted: false,
+        signedOut: false        
     },
     reducers: {
         restorePrompt: (state) => {
@@ -86,6 +102,9 @@ const roomPanelSlice = createSlice({
         restoreUserRoom: (state) => {
             state.userLeft = false;
         },
+        restoreState: (state) => {
+
+        }
     },    
     extraReducers: {
         [getRoom.pending]: (state, action) => {
@@ -143,7 +162,21 @@ const roomPanelSlice = createSlice({
         [deleteRoom.rejected]: (state, action) => {
             state.hasError = true;
             state.isLoading = false;            
-        },                         
+        },
+        [logout.pending]: (state, action) => {
+            state.hasError = false;
+            state.isLoading = true;
+        },
+        [logout.fulfilled]: (state, action) => {
+            console.log(action.payload);
+            if(action.payload.status === 200){
+                state.signedOut = true;
+            }
+        },
+        [logout.rejected]: (state, action) => {
+            state.hasError = true;
+            state.isLoading = false;
+        }                         
     }    
 })
 
@@ -155,5 +188,6 @@ export const erroed = state => state.roomPanelSlice.hasError;
 export const errorMessage = state => state.roomPanelSlice.errorMessage;
 export const roomDeleted = state => state.roomPanelSlice.roomDeleted;
 export const successMessage = state => state.roomPanelSlice.successMessage;
-export const {restorePrompt, restoreSuccess, updateRoomInfo, restoreUserRoom} = roomPanelSlice.actions;
+export const signedOut = state => state.roomPanelSlice.signedOut;
+export const {restorePrompt, restoreSuccess, updateRoomInfo, restoreUserRoom, restoreState} = roomPanelSlice.actions;
 export default roomPanelSlice.reducer;

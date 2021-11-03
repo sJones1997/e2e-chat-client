@@ -45,8 +45,8 @@
 }
 
 .room-panel-container .room-panel .more-options {
-    flex: 0.5;
     position: relative;
+    margin-left: auto;
 }
 
 .room-panel-container .room-panel .more-options span {

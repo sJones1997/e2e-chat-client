@@ -53,7 +53,7 @@ export default function SearchBar(){
 
     return (
         <div className="search-bar-container">
-            <input type="text" id="search-term" placeholder="Search for existing rooms or other users" onChange={(e) => {handleSearch(e)}}/>
+            <input type="text" id="search-term" placeholder="Search for existing rooms" onChange={(e) => {handleSearch(e)}}/>
             <div className="search-container" style={{'display' :(roomHasResults) ? 'block' : 'none'}}>
                 {
                     (roomHasResults)

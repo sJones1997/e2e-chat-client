@@ -15,7 +15,11 @@ import {
     errorMessage, 
     roomDeleted, 
     restoreSuccess,
-    updateRoomInfo } 
+    updateRoomInfo, 
+    signedOut,
+    restoreState,
+    logout
+} 
 from './roomPanelSlice';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -35,6 +39,7 @@ export default function RoomPanel(){
     const deletedRoom = useSelector(roomDeleted);
     const [showPanel, setShowPanel] = useState(false);
     const [showMoreOptions, setShowMoreOptions] = useState(false);
+    const userSignedOut = useSelector(signedOut);
 
     const dispatch = useDispatch();
 
@@ -102,7 +107,17 @@ export default function RoomPanel(){
             hideModal();
             dispatch(restoreSuccess());
         }
-    }, [deletedRoom])
+    }, [deletedRoom]);
+
+    useEffect(() => {
+        console.log(userSignedOut);
+        if(userSignedOut){
+            dispatch(verifyUser())
+            .then(() => {
+                dispatch(restoreState())
+            })
+        }
+    }, [userSignedOut])
 
     return (
         <div className="room-panel-container">
@@ -128,7 +143,7 @@ export default function RoomPanel(){
                     </span>
                     <div className="options-dropdown" style={{"display": showMoreOptions ? 'block' : 'none'}}>
                         <ul>
-                            <li>Logout</li>
+                            <li onClick={() => {dispatch(logout())}}>Logout</li>
                         </ul>
                     </div>
                 </div>                                                              
