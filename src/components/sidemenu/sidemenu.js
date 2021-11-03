@@ -21,6 +21,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import InfoBlock from '../infoblock/infoblock';
 import { socket } from '../../app/App';
+import { useState } from 'react';
 
 export default function SideMenu(){
 
@@ -35,6 +36,7 @@ export default function SideMenu(){
     const userLeftRoom = useSelector(userLeft);
     const userJoined = useSelector(userJoinedNewRoom);
     const currentUserRoom = useSelector(currentRoom);
+    const [moveRoom, setMoveRoom] = useState({});
 
     const handleModal = () => {
         const overlay = document.querySelector(".overlay");
@@ -48,22 +50,48 @@ export default function SideMenu(){
             })
         }
     }
+    
+    useEffect(() => {
+        dispatch(verifyUser())        
+        dispatch(getUserRooms());        
+    },[])    
 
-    const moveRoom = (newRoom, roomId) => {
-        socket.emit("move-room", newRoom, roomId, (connected, message) => {
-            if(connected){
-                const newCurrentRoom = rooms.filter(e => {return e.roomId === parseInt(roomId)})
-                dispatch(setCurrentRoom(newCurrentRoom[0]));       
-                document.querySelector('.selected').classList.remove("selected");
-                document.querySelector(`#room-${roomId}-${newRoom}`).classList.add("selected"); 
-            } else {
-                dispatch(setError({'message': message}));
-                setTimeout(() => {
-                    dispatch(resetError())
-                }, 5000);
-            }                   
-        });
-    }
+    useEffect(() => {
+        if(rooms.length){
+            setMoveRoom(rooms[0])
+        } else {
+            dispatch(setCurrentRoom({}));            
+        }
+    }, [rooms]);
+
+    useEffect(() => {
+        if(Object.entries(moveRoom).length){
+            dispatch(verifyUser())            
+            socket.emit("move-room", moveRoom.name, moveRoom.roomId, (connected, message) => {
+                if(connected){
+                    dispatch(setCurrentRoom(moveRoom));
+                }
+            })
+        }
+    }, [moveRoom]);
+
+    useEffect(() => {
+        if(userLeftRoom){
+            dispatch(getUserRooms()); 
+            dispatch(restoreUserRoom());   
+        }
+    }, [userLeftRoom]);
+
+    useEffect(() => {
+        if(Object.entries(currentUserRoom).length){
+            const selected = document.querySelector(".selected")
+            if(selected){
+                document.querySelector(".selected").classList.remove('selected');
+            } 
+            document.querySelector(`#room-${currentUserRoom.roomId}-${currentUserRoom.name}`).classList.add('selected');
+        }
+    }, [currentUserRoom]);
+    
     
     useEffect(() => {
         if(roomToAdd){
@@ -91,33 +119,8 @@ export default function SideMenu(){
                 dispatch(restoreUserJoined());
             })
         }
-    }, [userJoined, dispatch]);
-
-    useEffect(() => {    
-        if(userLeftRoom){
-            dispatch(verifyUser())
-            .then(() => {
-                dispatch(getUserRooms()); 
-                dispatch(restoreUserRoom());                   
-                const rooms = document.querySelectorAll('.room');
-                if(rooms.length > 1){
-                    let id = rooms[0].getAttribute('id');
-                    id = id.split("-");
-                    const roomId = id[1];
-                    const roomName = id[2];                    
-                    if(roomId === currentUserRoom.roomId && rooms.length > 1){
-                        moveRoom(roomName, roomId) 
-                    } else {
-                        dispatch(setCurrentRoom({}));
-                    }
-                  
-                } else {
-                    dispatch(setCurrentRoom({}));
-                }
-            })
-        }
-    }, [userLeftRoom, moveRoom, dispatch])    
-
+    }, [userJoined, dispatch]);       
+ 
     return (
         <div className="side-menu-container">
             <div className="search-bar">
@@ -131,7 +134,7 @@ export default function SideMenu(){
                     !(hasError && isLoading)
                     ?
                     rooms.map((e,i) => (
-                        <div className={i === 0 ? 'room selected' : 'room'} id={`room-${e.roomId}-${e.name}`} key={i} onClick={() => {moveRoom(e.name, e.roomId)}}>
+                        <div className={i === 0 ? 'room selected' : 'room'} id={`room-${e.roomId}-${e.name}`} key={i} onClick={() => {setMoveRoom({roomId: e.roomId, name: e.name})}}>
                             <h3>{e.name}</h3>
                         </div>
                     ))

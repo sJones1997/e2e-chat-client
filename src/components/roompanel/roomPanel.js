@@ -93,9 +93,9 @@ export default function RoomPanel(){
     }, [promptUser, showModal, hideModal])
 
     useEffect(() => {
-        if(Object.entries(currentUserRoom).length){
+    if(Object.entries(currentUserRoom).length){
             dispatch(verifyUser());
-            dispatch(getRoom({id: currentUserRoom.roomId}));
+            dispatch(getRoom(currentUserRoom));
             setShowPanel(true)
         } else {
             setShowPanel(false);
@@ -110,7 +110,6 @@ export default function RoomPanel(){
     }, [deletedRoom]);
 
     useEffect(() => {
-        console.log(userSignedOut);
         if(userSignedOut){
             dispatch(verifyUser())
             .then(() => {

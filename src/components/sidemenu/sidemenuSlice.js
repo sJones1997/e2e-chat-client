@@ -38,7 +38,6 @@ const sideMenuSlice = createSlice({
             state.errorMessage = '';
         },
         setCurrentRoom: (state, action) =>{
-            console.log(action.payload);
             state.currentRoom = action.payload;
         },
 

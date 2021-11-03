@@ -20,7 +20,6 @@ export default function Chatroom(){
     }, [])
 
     useEffect(() => {
-        console.log(userAuthenticated);
         if(!userAuthenticated){
             history.push('/login');
         }

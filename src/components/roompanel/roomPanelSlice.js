@@ -4,8 +4,8 @@ import { baseApi } from "../../app/App";
 export const getRoom = createAsyncThunk(
     'roomPanelSlice/getRoom',
     async (obj) => {
-        const {id} = obj
-        const data = await fetch(`${baseApi}/room/${id}`, {
+        const {roomId} = obj
+        const data = await fetch(`${baseApi}/room/${roomId}`, {
             method: 'GET',
             credentials:'include',
             headers: {
@@ -167,7 +167,6 @@ const roomPanelSlice = createSlice({
             state.isLoading = true;
         },
         [logout.fulfilled]: (state, action) => {
-            console.log(action.payload);
             if(action.payload.status === 200){
                 state.signedOut = true;
             }
