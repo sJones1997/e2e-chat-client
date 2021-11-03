@@ -15,11 +15,24 @@
     color:#333;
 }
 
+.room-panel-container .room-panel .room-name {
+    flex: 9;
+    text-align: left;
+}
+
 .room-panel-container .room-panel .room-options {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex: 4;
     widtH:30%;
+}
+
+.room-panel-container .room-panel .icons {
+    flex: 0.5;
+    text-align: right;
+    cursor: pointer;
+    color:#999;
 }
 
 .room-panel-container .room-panel .room-options button {

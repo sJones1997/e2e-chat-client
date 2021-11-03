@@ -1,4 +1,6 @@
 import './roomPanel.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {faEllipsisV} from '@fortawesome/free-solid-svg-icons'
 import {currentRoom} from '../sidemenu/sidemenuSlice';
 import { verifyUser } from '../../features/chatroom/chatroomSlice';
 import { 
@@ -109,11 +111,24 @@ export default function RoomPanel(){
                         <div className="room-options">
                             <h3>Current capacity: {currentRoomInfo.roomCapacity}/{currentRoomInfo.limit}</h3>
                             <button onClick={() => {leaveRoomHandle()}}>Leave room</button>
-                        </div>                        
+                        </div>  
+                        <div className="icons">
+                            <span>
+                                <FontAwesomeIcon icon={faEllipsisV} />                                
+                            </span>
+                        </div>                                                 
                     </div>     
                     :
-                    ''               
-                }    
+                    <div className="room-panel">
+                        <div className="icons">
+                            <span>
+                                <FontAwesomeIcon icon={faEllipsisV} />                                
+                            </span>
+                        </div>                                                   
+                    </div>           
+                } 
+                <div>  
+                </div>   
                 <div className="prompt-modal"> 
                     <div className="user-message">
                         <h2>{promptUserMessage}</h2>
