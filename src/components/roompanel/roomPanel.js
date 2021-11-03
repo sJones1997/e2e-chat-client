@@ -101,34 +101,28 @@ export default function RoomPanel(){
 
     return (
         <div className="room-panel-container">
+            <div className="room-panel">
                 {
                     showPanel
                     ?
-                    <div className="room-panel">
+                    <div className="room-info">
                         <div className="room-name">
-                            <h2>Room name: {currentRoomInfo.name}</h2>
+                            <h2>{currentRoomInfo.name}</h2>
                         </div>        
                         <div className="room-options">
-                            <h3>Current capacity: {currentRoomInfo.roomCapacity}/{currentRoomInfo.limit}</h3>
+                            <h3>Capacity: {currentRoomInfo.roomCapacity}/{currentRoomInfo.limit}</h3>
                             <button onClick={() => {leaveRoomHandle()}}>Leave room</button>
-                        </div>  
-                        <div className="icons">
-                            <span>
-                                <FontAwesomeIcon icon={faEllipsisV} />                                
-                            </span>
-                        </div>                                                 
-                    </div>     
+                        </div>                                  
+                    </div>
                     :
-                    <div className="room-panel">
-                        <div className="icons">
-                            <span>
-                                <FontAwesomeIcon icon={faEllipsisV} />                                
-                            </span>
-                        </div>                                                   
-                    </div>           
-                } 
-                <div>  
-                </div>   
+                    ''
+                }   
+                <div className="icons">
+                    <span>
+                        <FontAwesomeIcon icon={faEllipsisV} />                                
+                    </span>
+                </div>                                                              
+            </div>                
                 <div className="prompt-modal"> 
                     <div className="user-message">
                         <h2>{promptUserMessage}</h2>

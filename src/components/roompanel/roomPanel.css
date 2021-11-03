@@ -12,30 +12,25 @@
     height:100%;
     margin: 0 auto;
     justify-content: space-between;
-    color:#333;
+    color:#666;
 }
 
-.room-panel-container .room-panel .room-name {
-    flex: 9;
-    text-align: left;
-}
-
-.room-panel-container .room-panel .room-options {
+.room-panel-container .room-panel .room-info {
     display: flex;
     justify-content: space-between;
+    flex:10;
     align-items: center;
-    flex: 4;
-    widtH:30%;
 }
 
-.room-panel-container .room-panel .icons {
-    flex: 0.5;
-    text-align: right;
-    cursor: pointer;
-    color:#999;
+.room-panel-container .room-panel .room-info .room-options {
+    display: flex;
+    width:30%;
+    align-items: center;
+    justify-content: space-around;
 }
 
-.room-panel-container .room-panel .room-options button {
+
+.room-panel-container .room-panel .room-info .room-options button {
     background: rgba(113, 178, 128, 0.65);   
     border-radius: 25px;
     width:40%;
@@ -46,7 +41,18 @@
     color:#fff;
     font-size: 1em;
     font-weight: 600;     
+    cursor: pointer;
 }
+
+.room-panel-container .room-panel .icons {
+    flex: 0.5;
+    cursor: pointer;
+}
+
+.room-panel-container .room-panel .room-info .room-options button:hover{
+    background: rgba(113, 178, 128, 0.85); 
+}
+
 
 .prompt-modal {
     background-color:#fff;
