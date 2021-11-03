@@ -34,6 +34,7 @@ export default function RoomPanel(){
     const errorMsg = useSelector(errorMessage);
     const deletedRoom = useSelector(roomDeleted);
     const [showPanel, setShowPanel] = useState(false);
+    const [showMoreOptions, setShowMoreOptions] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -60,6 +61,10 @@ export default function RoomPanel(){
         dispatch(verifyUser());
         dispatch(deleteRoom({id: currentRoomInfo.id}))
     }    
+
+    const showMoreOptionsHandle = () => {
+        setShowMoreOptions(!showMoreOptions);
+    }
 
     useEffect(() => {
         socket.once("user-joined", (data) => {
@@ -117,10 +122,15 @@ export default function RoomPanel(){
                     :
                     ''
                 }   
-                <div className="icons">
-                    <span>
+                <div className="more-options">
+                    <span onClick={() => {showMoreOptionsHandle()}}>
                         <FontAwesomeIcon icon={faEllipsisV} />                                
                     </span>
+                    <div className="options-dropdown" style={{"display": showMoreOptions ? 'block' : 'none'}}>
+                        <ul>
+                            <li>Logout</li>
+                        </ul>
+                    </div>
                 </div>                                                              
             </div>                
                 <div className="prompt-modal"> 

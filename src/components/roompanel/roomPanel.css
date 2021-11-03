@@ -44,9 +44,34 @@
     cursor: pointer;
 }
 
-.room-panel-container .room-panel .icons {
+.room-panel-container .room-panel .more-options {
     flex: 0.5;
+    position: relative;
+}
+
+.room-panel-container .room-panel .more-options span {
+    cursor: pointer;    
+}
+
+.room-panel-container .room-panel .more-options .options-dropdown {
+    position: absolute;
+    background-color: #fff;
+    box-shadow: -8px 8px 12px 0 rgba(33,33,33,0.25);
+    border-radius: 5px;
+    width:100px;
+    top: 100%;
+    padding: 1em;
+    border: 1px solid rgba(33,33,33,0.15);
+    right: 40%;
+}
+
+.room-panel-container .room-panel .more-options .options-dropdown ul {
+    list-style: none;
+}
+
+.room-panel-container .room-panel .more-options .options-dropdown ul li {
     cursor: pointer;
+    user-select: none;
 }
 
 .room-panel-container .room-panel .room-info .room-options button:hover{
