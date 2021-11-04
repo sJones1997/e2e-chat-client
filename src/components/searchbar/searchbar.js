@@ -7,12 +7,15 @@ import {
     restoreResults, 
     userJoinedRoom,
     userFeedBack,
-    userMessage,
-    error
+    error,
+    errorMessage,
+    restoreFeedBack
 } from './searchbarSlice';
 import './searchbar.css'
 import InfoBlock from '../infoblock/infoblock';
 import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 
 export default function SearchBar(){
@@ -21,11 +24,12 @@ export default function SearchBar(){
     const roomResults = useSelector(roomSearchResults);
     const roomHasResults = useSelector(hasRoomResult);
     const hasError = useSelector(error);
-    const errorMsg = useSelector(userMessage);
+    const errorMsg = useSelector(errorMessage);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [roomToJoin, setRoomToJoin] = useState({});
 
-    const handleSearch = (e) => {
+    useEffect(() => {
         dispatch(verifyUser());
-        const searchTerm = e.target.value;
         if(searchTerm.length){
             socket.emit("search", searchTerm, (result) => {
                 if(result){
@@ -35,69 +39,119 @@ export default function SearchBar(){
         } else {
             dispatch(restoreResults())
         }
-    }
+    }, [searchTerm, dispatch]);
 
-    const connectToRoom = (roomId, alreadyJoined) => {
-        dispatch(verifyUser());
-        if(!alreadyJoined){
-            socket.emit('join-room', roomId, (message, status) =>{
-                if(status){
-                    dispatch(userJoinedRoom());
-                    document.querySelector('#search-term').value = '';
-                } else {
-                    dispatch(userFeedBack({message: message}));
-                }
-            })
+    useEffect(() => {
+        if(Object.entries(roomToJoin).length){
+            dispatch(verifyUser());
+            if(!roomToJoin.joined){
+                socket.emit('join-room', roomToJoin.roomId, (message, status) =>{
+                    if(status){
+                        dispatch(userJoinedRoom());
+                    } else {
+                        dispatch(userFeedBack({message: message}));
+                        setTimeout(() => {
+                            dispatch(restoreFeedBack())
+                        }, 3000);
+
+                    }
+                    setSearchTerm('');                    
+                })
+            }
         }
-    }
+    }, [roomToJoin, dispatch])
+
+
 
     return (
-        <div className="search-bar-container">
-            <input type="text" id="search-term" placeholder="Search for existing rooms" onChange={(e) => {handleSearch(e)}}/>
-            <div className="search-container" style={{'display' :(roomHasResults) ? 'block' : 'none'}}>
-                {
-                    (roomHasResults)
-                    ?
-                    <div className="results">
-                        {
-                            roomHasResults
-                            ?
-                            <div className="room-results-container">
-                                <div className="results-header">
-                                    <h2>Rooms:</h2>
-                                </div>
-                                <div className="room-results">
-                                { roomResults.map((e, i) => {
-                                    return <div className={e.alreadyJoined ? 'joined room-result result' : 'room-result result'} key={`room-${i}`} onClick={() => {connectToRoom(e.id, e.alreadyJoined)}}>
-                                        <p>{e.name}</p>
+        <div className="search-container">
+            <div className="search-bar-container">
+                <input type="text" id="search-term" autoComplete='off' value={searchTerm} placeholder="Search for existing rooms" onChange={(e) => {setSearchTerm(e.target.value)}}/>  
+                <div className="search-results" style={{'display': searchTerm.length ? 'block' : 'none'}}>
+                    {
+                        (searchTerm.length)
+                        ?
+                        <div className="results">
+                            {
+                                (roomHasResults)
+                                ?   
+                                <div className="room-results-container">
+                                    <div className="results-header">
+                                        <h2>Rooms:</h2>
                                     </div>
-                                })}                                    
+                                    <div className="room-results">
+                                        {
+                                            roomResults.map((e,i) => (
+                                            <div className={e.alreadyJoined ? 'joined room-result result' : 'room-result result'} key={`room-${i}`} onClick={() => {setRoomToJoin({roomId: e.id, joined: e.alreadyJoined})}}>
+                                                <p>{e.name}</p>
+                                            </div>                                        
+                                            ))
+                                        }
+                                    </div>
+                                </div>                                                      
+                                :
+                                <div className="no-results">
+                                    <h2>No results to show</h2>
                                 </div>
-                            </div>
-                            :
-                            <div className="room-results-container">
-                                <div className="results-header">
-                                    <h2>Rooms:</h2>
-                                </div>
-                                <div className="no-room-result result">
-                                    <p>{roomResults[0]}</p>                               
-                                </div>
-                            </div>                            
-                }
-                    </div>
-                    :
-                    ''                    
-                }             
-            </div>          
-            <div className="error-component">
-            {
-                    (hasError)
-                    ?
-                    <InfoBlock message={errorMsg} error={hasError} />
-                    :
-                    ''
-            }                       
+                            }
+                        </div>
+                        :
+                        ''               
+                    
+                    }
+                </div>              
+            </div>
+            <div>
+                {
+                        (hasError)
+                        ?
+                        <InfoBlock message={errorMsg} error={hasError} />
+                        :
+                        ''
+                }                 
             </div>
         </div>
+        
+
+        // <div className="search-bar-container">
+        //     <input type="text" id="search-term" placeholder="Search for existing rooms" onChange={(e) => {handleSearch(e)}}/>
+        //     <div className="search-container" style={{'display' :(roomHasResults) ? 'block' : 'none'}}>
+        //         {
+        //             (roomHasResults)
+        //             ?
+        //             <div className="results">
+        //                 {
+        //                     roomHasResults
+        //                     ?
+        //                     <div className="room-results-container">
+        //                         <div className="results-header">
+        //                             <h2>Rooms:</h2>
+        //                         </div>
+        //                         <div className="room-results">
+        //                         { roomResults.map((e, i) => {
+        //                             return <div className={e.alreadyJoined ? 'joined room-result result' : 'room-result result'} key={`room-${i}`} onClick={() => {connectToRoom(e.id, e.alreadyJoined)}}>
+        //                                 <p>{e.name}</p>
+        //                             </div>
+        //                         })}                                    
+        //                         </div>
+        //                     </div>
+        //                     :
+        //                     <div className="room-results-container">
+        //                         <div className="results-header">
+        //                             <h2>Rooms:</h2>
+        //                         </div>
+        //                         <div className="no-room-result result">
+        //                             <p>{roomResults[0]}</p>                               
+        //                         </div>
+        //                     </div>                            
+        //         }
+        //             </div>
+        //             :
+        //             ''                    
+        //         }             
+        //     </div>          
+        //     <div className="error-component">                      
+        //     </div>
+        // </div>
     )
 }

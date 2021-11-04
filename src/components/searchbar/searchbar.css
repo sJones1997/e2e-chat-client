@@ -1,13 +1,16 @@
-.search-bar-container {
+.search-container {
     display: flex;
     align-items: center;
     justify-content: center;
     height:100%;
+}
+
+.search-container .search-bar-container {
+    width:100%;
     position: relative;
 }
 
-
-.search-bar-container input {
+.search-container .search-bar-container input {
     width:85%;
     border-radius: 25px;
     border:1px solid rgba(33, 33, 33, 0.25); 
@@ -20,7 +23,7 @@
     border:1px solid rgba(33, 33, 33, 0.15); 
 }
 
-.search-bar-container .search-container {
+.search-bar-container .search-results {
     position: absolute;
     top:70%;
     left:70%;
@@ -30,48 +33,49 @@
     text-align: left;
     padding: 0.5em;
     box-shadow: 10px 10px 12px 6px rgba(33, 33, 33, 0.15);
-    border-radius: 10px;;
+    border-radius: 10px;
+    border: 1px solid rgba(33,33,33,0.15);
 }
 
-.search-bar-container .search-container .results {
+.search-container .search-bar-container .results {
     padding: 0.5em;
     box-sizing: border-box;
 }
 
-.search-bar-container .search-container .results .results-header {
+.search-container .search-bar-container .results .results-header {
     padding: 0.25em 0;
     margin-bottom:0.25em;
 }
 
-.search-bar-container .search-container .results .result {
+.search-container .search-bar-container .results .result {
     margin: 0 auto;
     padding: 0.5em 0;
 }
 
-.search-bar-container .search-container .results .result {
+.search-container .search-bar-container.results .result {
     border-radius: 5px;
 }
-.search-bar-container .search-container .results .result:hover {
+.search-container .search-bar-container .results .result:hover {
     cursor: pointer;
     background-color:#eee;
 }
-.search-bar-container .search-container .results .result p {
+.search-container .search-bar-container .results .result p {
     font-size:1.2em;
     margin: 0 auto;
     padding: 0 0.25em;
 }
 
-.search-bar-container .search-container .results .no-room-result:hover, .search-bar-container .search-container .results .no-user-result:hover {
+.search-container .search-bar-container .results .no-room-result:hover, .search-container .search-bar-container .results .no-user-result:hover {
     cursor:default !important;
     background-color:#fff !important;
 }
 
-.search-bar-container .search-container .joined {
+.search-container .search-bar-container .joined {
     background-color:rgba(113, 178, 128, 0.65);
     color:#fff;
 }
 
-.search-bar-container .search-container .joined:hover {
+.search-container .search-bar-container .joined:hover {
     background-color:rgba(113, 178, 128, 0.65) !important;    
     cursor:default !important;    
 }
@@ -80,12 +84,12 @@
 
 
 
-.search-bar-container .search-container .result:hover{
+.search-container .search-bar-container .result:hover{
 
 }
 
 
-.search-bar-container .search-container .result hr {
+.search-container .search-bar-container .result hr {
     width:95%;
     margin: 0.25em auto 0 auto;
 } */

@@ -7,7 +7,8 @@ const searchBarSlice = createSlice({
         roomSearchHasResult: false,
         userJoinedNewRoom: false,
         joinFeedBack: '',
-        hasError: false
+        hasError: false,
+        errorMessage: '',
     },
     reducers: {
         updateSearchResult: (state, action) => {
@@ -37,12 +38,16 @@ const searchBarSlice = createSlice({
         },
         userFeedBack: (state, action) => {
             state.hasError = true;
-            state.userFeedBack = action.payload.message;
+            state.errorMessage = action.payload.message;
+        },
+        restoreFeedBack: (state) => {
+            state.hasError = false;
+            state.errorMessage = '';
         }
     }
 });
 
-export const {updateSearchResult, restoreResults, userJoinedRoom, userFeedBack, restoreUserJoined} = searchBarSlice.actions;
+export const {updateSearchResult, restoreResults, userJoinedRoom, userFeedBack, restoreFeedBack, restoreUserJoined} = searchBarSlice.actions;
 export const hasRoomResult = state => state.searchBarSlice.roomSearchHasResult;
 export const hasUserResult = state => state.searchBarSlice.userSearchHasResult;
 export const userSearchResults = state => state.searchBarSlice.userSearchResults;
@@ -50,4 +55,5 @@ export const roomSearchResults = state => state.searchBarSlice.roomSearchResults
 export const userJoinedNewRoom = state => state.searchBarSlice.userJoinedNewRoom;
 export const userMessage = state => state.searchBarSlice.joinFeedBack;
 export const error = state => state.searchBarSlice.hasError;
+export const errorMessage = state => state.searchBarSlice.errorMessage;
 export default searchBarSlice.reducer;

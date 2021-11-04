@@ -53,8 +53,8 @@ export default function SideMenu(){
     
     useEffect(() => {
         dispatch(verifyUser())        
-        dispatch(getUserRooms());        
-    },[])    
+        dispatch(getUserRooms());  
+    },[dispatch])    
 
     useEffect(() => {
         if(rooms.length){
@@ -62,7 +62,7 @@ export default function SideMenu(){
         } else {
             dispatch(setCurrentRoom({}));            
         }
-    }, [rooms]);
+    }, [rooms, dispatch]);
 
     useEffect(() => {
         if(Object.entries(moveRoom).length){
@@ -73,14 +73,14 @@ export default function SideMenu(){
                 }
             })
         }
-    }, [moveRoom]);
+    }, [moveRoom, dispatch]);
 
     useEffect(() => {
         if(userLeftRoom){
             dispatch(getUserRooms()); 
             dispatch(restoreUserRoom());   
         }
-    }, [userLeftRoom]);
+    }, [userLeftRoom, dispatch]);
 
     useEffect(() => {
         if(Object.entries(currentUserRoom).length){
