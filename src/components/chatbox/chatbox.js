@@ -5,6 +5,7 @@ import { currentRoom } from '../sidemenu/sidemenuSlice';
 import { socket } from '../../app/App';
 import aes256 from 'aes256';
 import { useSelector } from 'react-redux';
+import InfoBlock from '../infoblock/infoblock';
 
 export default function ChatBox() {
 
@@ -13,6 +14,8 @@ export default function ChatBox() {
     const [roomName, setRoomName] = useState("");
     const [roomId, setRoomId] = useState(0);
     const [messageObject, setMessageObject] = useState({});
+    const [errorMessage, setErrorMessage] = useState('');
+    const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
         if(Object.entries(userRoom).length){
@@ -37,8 +40,17 @@ export default function ChatBox() {
 
     useEffect(() => {
         if(messageObject.message){
-            socket.emit("send-message", messageObject, (data) => {
-                
+            socket.emit("send-message", messageObject, (data, message) => {
+                if(data){
+
+                } else {
+                    setHasError(!data)
+                    setErrorMessage(message);
+                    setTimeout(() => {
+                        setHasError(false);
+                        setErrorMessage('');
+                    }, 3000);
+                }
             })
         }
     }, [messageObject])
@@ -49,6 +61,13 @@ export default function ChatBox() {
                 <input disabled={roomName && roomId ? '' : "disabled"} type="text" placeholder="Enter your message here..." value={message} onChange={(e) => setMessage(e.target.value)}/>
                 <input  disabled={roomName && roomId ? '' : "disabled"} type="submit" value="Send" />
             </form>
+            {
+                        (hasError)
+                        ?
+                        <InfoBlock message={errorMessage} error={hasError} />
+                        :
+                        ''
+            }              
         </div>
     )
 }
