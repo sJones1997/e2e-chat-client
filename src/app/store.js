@@ -4,7 +4,6 @@ import registerReducer from '../features/register/registerSlice';
 import loginReducer from '../features/login/loginSlice';
 import addRoomReducer from '../components/addroom/addroomSlice';
 import sideMenuReducer from "../components/sidemenu/sidemenuSlice";
-import chatboxReducer from '../components/chatbox/chatboxSlice';
 import messageReducer from '../components/messages/messageSlice';
 import roomPanelReducer from '../components/roompanel/roomPanelSlice';
 import searchBarReducer from '../components/searchbar/searchbarSlice';
@@ -14,7 +13,6 @@ const combinedReducer = combineReducers({
     loginSlice: loginReducer,
     addRoomSlice: addRoomReducer,
     sideMenuSlice: sideMenuReducer,
-    chatboxSlice: chatboxReducer,
     messageSlice: messageReducer,
     roomPanelSlice: roomPanelReducer,
     searchBarSlice: searchBarReducer,
