@@ -65,7 +65,7 @@ export default function SideMenu(){
     useEffect(() => {
         if(Object.entries(moveRoom).length){
             dispatch(verifyUser())            
-            socket.emit("move-room", moveRoom.name, moveRoom.roomId, (connected, message) => {
+            socket.emit("move-room", moveRoom.name, moveRoom.roomId, (connected) => {
                 if(connected){
                     dispatch(setCurrentRoom(moveRoom));
                 }
@@ -92,11 +92,13 @@ export default function SideMenu(){
     
     
     useEffect(() => {
-        if(roomToAdd){
-            dispatch(verifyUser())
-            .then(() => {
-                dispatch(getUserRooms());
-            })
+        if(Object.entries(roomToAdd).length){
+            if(roomToAdd){
+                dispatch(verifyUser())
+                .then(() => {
+                    dispatch(getUserRooms());
+                })
+            }
         }
     }, [roomToAdd, dispatch]);
 

@@ -1,32 +1,47 @@
 
 import { useEffect, useState } from 'react'
 import './chatbox.css'
-import { currentUserRoom } from './chatboxSlice';
+import { currentRoom } from '../sidemenu/sidemenuSlice';
 import { socket } from '../../app/App';
+import aes256 from 'aes256';
 import { useSelector } from 'react-redux';
 
 export default function ChatBox() {
 
     const [message, setMessage] = useState("");
-    const userRoom = useSelector(currentUserRoom);
-    const [roomName, setRoomName] = useState('');
+    const userRoom = useSelector(currentRoom);
+    const [roomName, setRoomName] = useState("");
     const [roomId, setRoomId] = useState(0);
+    const [messageObject, setMessageObject] = useState({});
+
+    useEffect(() => {
+        if(Object.entries(userRoom).length){
+            console.log(userRoom);
+            setRoomName(userRoom.name);
+            setRoomId(userRoom.roomId);
+            setMessage('');
+        }
+    }, [userRoom]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(roomName && roomId){
-            socket.emit("message", roomName, message)            
-        } else {
-            console.log("No room!")
+        encryptMessage(message);
+    }
+
+    const encryptMessage = (messageToEncrypt) => {
+        if(messageToEncrypt.length){
+            const encryptMessage = aes256.encrypt(process.env.REACT_APP_AES_KEY, message);
+            setMessageObject({sent: Date(), roomId: roomId, roomName: roomName, message: encryptMessage});
         }
     }
 
     useEffect(() => {
-        setRoomName(userRoom.name);
-        setRoomId(userRoom.id);
-        setMessage('');
-    }, [userRoom])
-
+        if(messageObject.message){
+            socket.emit("send-message", messageObject, (data) => {
+                
+            })
+        }
+    }, [messageObject])
 
     return (
         <div className="chat-box-container">
