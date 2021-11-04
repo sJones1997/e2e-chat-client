@@ -5,7 +5,9 @@ import { currentRoom } from '../sidemenu/sidemenuSlice';
 import { socket } from '../../app/App';
 import aes256 from 'aes256';
 import { useSelector } from 'react-redux';
+import { newLocalMessage } from '../messages/messageSlice';
 import InfoBlock from '../infoblock/infoblock';
+import { useDispatch } from 'react-redux';
 
 export default function ChatBox() {
 
@@ -16,6 +18,7 @@ export default function ChatBox() {
     const [messageObject, setMessageObject] = useState({});
     const [errorMessage, setErrorMessage] = useState('');
     const [hasError, setHasError] = useState(false);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if(Object.entries(userRoom).length){
@@ -36,16 +39,19 @@ export default function ChatBox() {
             const encryptMessage = aes256.encrypt(process.env.REACT_APP_AES_KEY, message);
             setMessageObject({sent: Date(), roomId: roomId, roomName: roomName, message: encryptMessage});
         }
-    }
+    } 
 
     useEffect(() => {
         if(messageObject.message){
-            socket.emit("send-message", messageObject, (data, message ='') => {
-                if(data){
+            socket.emit("send-message", messageObject, (sent, data ='') => {
+                if(sent){
+                    data.message = message;
+                    setMessage('');
+                    dispatch(newLocalMessage(data));
 
                 } else {
-                    if(!data && message.length){
-                        setHasError(!data)
+                    if(!sent && data.length){
+                        setHasError(true)
                         setErrorMessage(message);
                         setTimeout(() => {
                             setHasError(false);
@@ -55,7 +61,7 @@ export default function ChatBox() {
                 }
             })
         }
-    }, [messageObject])
+    }, [messageObject, dispatch])
 
     return (
         <div className="chat-box-container">
