@@ -76,9 +76,8 @@ export default function RoomPanel(){
     }
 
     useEffect(() => {
-        socket.once("user-joined", (data) => {
+        socket.on("user-joined", (data) => {
             if(data){
-                console.log(data);
                 dispatch(updateRoomInfo({amount: 1}));            
             }
         })
@@ -91,11 +90,10 @@ export default function RoomPanel(){
                 console.log(name);
             })
         }
-    }, [userLeftRoom, leftName]);
+    }, [userLeftRoom, leftName, dispatch, leftId]);
 
     useEffect(() => {
-        socket.once('user-left', data => {
-            console.log(data);
+        socket.on('user-left', data => {
             dispatch(updateRoomInfo({amount: -1}));  
         })
     }, [dispatch])
