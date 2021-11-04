@@ -78,10 +78,11 @@ export default function RoomPanel(){
     useEffect(() => {
         socket.once("user-joined", (data) => {
             if(data){
+                console.log(data);
                 dispatch(updateRoomInfo({amount: 1}));            
             }
         })
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(verifyUser());
@@ -94,9 +95,10 @@ export default function RoomPanel(){
 
     useEffect(() => {
         socket.once('user-left', data => {
+            console.log(data);
             dispatch(updateRoomInfo({amount: -1}));  
         })
-    }, [])
+    }, [dispatch])
 
     const leaveRoomHandle = () => {
         setLeftName(currentRoomInfo.name);
