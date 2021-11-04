@@ -30,13 +30,13 @@ export default function Register(){
 
     useEffect(() => {
         dispatch(verifyUser());
-    }, [])    
+    }, [dispatch])    
 
     useEffect(() => {
         if(userAuthenticated){
             history.push('/');
         }
-    }, [userAuthenticated]);        
+    }, [userAuthenticated, history]);        
     
     return (
         <div className="register-container">

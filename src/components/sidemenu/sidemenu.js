@@ -8,8 +8,6 @@ import {
     errored, 
     errorMessage, 
     loading, 
-    setError, 
-    resetError, 
     setCurrentRoom,
     currentRoom 
 } from './sidemenuSlice';

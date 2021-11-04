@@ -17,13 +17,13 @@ export default function Chatroom(){
     
     useEffect(() => {
         dispatch(verifyUser())
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         if(!userAuthenticated){
-            history.push('/login');
+            history.push('/register');
         }
-    }, [userAuthenticated])
+    }, [userAuthenticated, history])
 
     return (
         <div className="chatroom-container">

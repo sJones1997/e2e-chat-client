@@ -77,7 +77,7 @@ export default function RoomPanel(){
                 dispatch(updateRoomInfo());            
             }
         })
-    }, []);
+    }, [dispatch]);
 
     const leaveRoomHandle = () => {
         dispatch(verifyUser());
@@ -100,14 +100,14 @@ export default function RoomPanel(){
         } else {
             setShowPanel(false);
         }
-    }, [currentUserRoom]);
+    }, [currentUserRoom, dispatch])
 
     useEffect(() => {
         if(deletedRoom){
             hideModal();
             dispatch(restoreSuccess());
         }
-    }, [deletedRoom]);
+    }, [deletedRoom, dispatch, hideModal]);
 
     useEffect(() => {
         if(userSignedOut){
@@ -116,7 +116,7 @@ export default function RoomPanel(){
                 dispatch(restoreState())
             })
         }
-    }, [userSignedOut])
+    }, [userSignedOut, dispatch])
 
     return (
         <div className="room-panel-container">

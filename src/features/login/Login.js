@@ -1,7 +1,7 @@
 import { useHistory } from "react-router";
 import { useState, useEffect } from "react";
 import {verifyUser, userSignedIn} from '../chatroom/chatroomSlice';
-import { submitLogin, errorMessage, errored, session } from "./loginSlice";
+import { submitLogin, errorMessage, errored } from "./loginSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import GoogleIcon from "../../components/googleicon/GoogleIcon";
@@ -21,13 +21,13 @@ export default function Login(){
 
     useEffect(() => {
         dispatch(verifyUser());
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         if(userAuthenticated){
             history.push('/');
         }
-    }, [userAuthenticated]);    
+    }, [userAuthenticated, history]);    
 
     const handleSubmission = (e) => {
         e.preventDefault();
