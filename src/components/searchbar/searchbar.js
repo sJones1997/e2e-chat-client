@@ -14,8 +14,7 @@ import {
 import './searchbar.css'
 import InfoBlock from '../infoblock/infoblock';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 
 export default function SearchBar(){
@@ -111,47 +110,5 @@ export default function SearchBar(){
                 }                 
             </div>
         </div>
-        
-
-        // <div className="search-bar-container">
-        //     <input type="text" id="search-term" placeholder="Search for existing rooms" onChange={(e) => {handleSearch(e)}}/>
-        //     <div className="search-container" style={{'display' :(roomHasResults) ? 'block' : 'none'}}>
-        //         {
-        //             (roomHasResults)
-        //             ?
-        //             <div className="results">
-        //                 {
-        //                     roomHasResults
-        //                     ?
-        //                     <div className="room-results-container">
-        //                         <div className="results-header">
-        //                             <h2>Rooms:</h2>
-        //                         </div>
-        //                         <div className="room-results">
-        //                         { roomResults.map((e, i) => {
-        //                             return <div className={e.alreadyJoined ? 'joined room-result result' : 'room-result result'} key={`room-${i}`} onClick={() => {connectToRoom(e.id, e.alreadyJoined)}}>
-        //                                 <p>{e.name}</p>
-        //                             </div>
-        //                         })}                                    
-        //                         </div>
-        //                     </div>
-        //                     :
-        //                     <div className="room-results-container">
-        //                         <div className="results-header">
-        //                             <h2>Rooms:</h2>
-        //                         </div>
-        //                         <div className="no-room-result result">
-        //                             <p>{roomResults[0]}</p>                               
-        //                         </div>
-        //                     </div>                            
-        //         }
-        //             </div>
-        //             :
-        //             ''                    
-        //         }             
-        //     </div>          
-        //     <div className="error-component">                      
-        //     </div>
-        // </div>
     )
 }

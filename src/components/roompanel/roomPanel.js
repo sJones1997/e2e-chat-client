@@ -7,6 +7,7 @@ import {
     restorePrompt,
     leaveRoom, 
     userPrompt, 
+    userLeft,
     userPromptMessage, 
     getRoom, 
     roomInfo, 
@@ -40,6 +41,9 @@ export default function RoomPanel(){
     const [showPanel, setShowPanel] = useState(false);
     const [showMoreOptions, setShowMoreOptions] = useState(false);
     const userSignedOut = useSelector(signedOut);
+    const userLeftRoom = useSelector(userLeft);
+    const [leftName, setLeftName] = useState('');
+    const [leftId, setLeftId] = useState(0);
 
     const dispatch = useDispatch();
 
@@ -74,13 +78,31 @@ export default function RoomPanel(){
     useEffect(() => {
         socket.once("user-joined", (data) => {
             if(data){
-                dispatch(updateRoomInfo());            
+                console.log(data);
+                dispatch(updateRoomInfo({amount: 1}));            
             }
         })
     }, [dispatch]);
 
-    const leaveRoomHandle = () => {
+    useEffect(() => {
         dispatch(verifyUser());
+        if(userLeftRoom){           
+            socket.emit('user-leaving', leftId, leftName, (name) => {
+                console.log(name);
+            })
+        }
+    }, [userLeftRoom, leftName]);
+
+    useEffect(() => {
+        socket.once('user-left', data => {
+            console.log(data);
+            dispatch(updateRoomInfo({amount: -1}));  
+        })
+    }, [dispatch])
+
+    const leaveRoomHandle = () => {
+        setLeftName(currentRoomInfo.name);
+        setLeftId(currentRoomInfo.id);        
         dispatch(leaveRoom({id: currentRoomInfo.id}));   
     }
 

@@ -95,8 +95,8 @@ const roomPanelSlice = createSlice({
             state.roomDeleted = false;
             state.successMessage = '';
         },
-        updateRoomInfo: (state) => {
-            state.roomInfo.roomCapacity++;
+        updateRoomInfo: (state, action) => {
+            state.roomInfo.roomCapacity += action.payload.amount
         },
         restoreUserRoom: (state) => {
             state.userLeft = false;
