@@ -40,16 +40,18 @@ export default function ChatBox() {
 
     useEffect(() => {
         if(messageObject.message){
-            socket.emit("send-message", messageObject, (data, message) => {
+            socket.emit("send-message", messageObject, (data, message ='') => {
                 if(data){
 
                 } else {
-                    setHasError(!data)
-                    setErrorMessage(message);
-                    setTimeout(() => {
-                        setHasError(false);
-                        setErrorMessage('');
-                    }, 3000);
+                    if(!data && message.length){
+                        setHasError(!data)
+                        setErrorMessage(message);
+                        setTimeout(() => {
+                            setHasError(false);
+                            setErrorMessage('');
+                        }, 3000);
+                    }
                 }
             })
         }
