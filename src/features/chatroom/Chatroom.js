@@ -17,7 +17,8 @@ export default function Chatroom(){
     
     useEffect(() => {
         dispatch(verifyUser())
-    }, [dispatch])
+        console.log("here")
+    })
 
     useEffect(() => {
         if(!userAuthenticated){

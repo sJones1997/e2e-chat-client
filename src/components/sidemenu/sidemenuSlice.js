@@ -49,11 +49,13 @@ const sideMenuSlice = createSlice({
         },
         [getUserRooms.fulfilled]: (state, action) => {
             state.isLoading = false;
-            if(action.payload.status === 200){
-                if(!(action.payload.message.length === 1 && action.payload.message[0].roomId === null)){
+            if(action.payload.status === 200 || action.payload.status === 201){
+                if(action.payload.status === 200){
+
                     state.userRooms = action.payload.message;
                     state.currentRoom = state.userRooms[0];
                 } else {
+                    state.currentRoom = {}
                     state.userRooms = []
                 }
             } else {

@@ -1,3 +1,58 @@
-.message-container {
+.messages-container {
     height:100%;
+    width:100%;
+    position: relative;
+}
+
+.messages-container .room-messages {
+    width: 100%;
+    padding: 0 3em;
+    box-sizing: border-box;
+    height:100%;
+    display: flex;
+    flex-direction: column-reverse;
+    align-content: center;
+    position: absolute;
+    overflow-y: scroll;
+}
+
+.messages-container .room-messages .message-container {
+    width:auto;
+}
+
+.messages-container .room-messages .message {
+    min-width: auto;
+    max-width: 50%;
+    color:#fff;
+    display: inline-block;
+    font-weight: 600;
+    text-align: left;
+    padding: 0.75em;
+    border-radius: 20px;
+}
+
+.messages-container .room-messages .username-container {
+    font-size: 0.9em;
+    color:#999;
+    width:auto;
+    padding-left: 0.25em;
+    margin-bottom:0.5em;
+    margin-right: auto;
+    text-align: left;
+}
+
+.user-message-local {
+    background: rgba(113, 178, 128, 0.95);
+    margin:0 0 2em 0;
+    float: right;
+}
+
+.user-message-public {
+    background: rgba(19, 78, 94, 0.65);
+    margin:0 auto 2em 0;    
+    float: left;
+}
+
+.user-notifcation {
+    margin: 1em 0;
 }

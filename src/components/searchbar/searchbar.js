@@ -41,7 +41,7 @@ export default function SearchBar(){
     }, [searchTerm, dispatch]);
 
     useEffect(() => {
-        if(Object.entries(roomToJoin).length){
+        if(Object.keys(roomToJoin).length){
             dispatch(verifyUser());
             if(!roomToJoin.joined){
                 socket.emit('join-room', roomToJoin.roomId, (message, status) =>{

@@ -51,10 +51,8 @@ const registerSlice = createSlice({
         },
         [submitRegistration.fulfilled]: (state, action) => {
             state.isLoading = false;
-            state.hasError = false;
             if(action.payload.status === 200){
-                state.errorMessage = '';
-                state.sessionActive = state.redirectRequired = true;
+                state.hasError = false;
             } else {
                 state.hasError = true;
                 state.errorMessage = action.payload.message;

@@ -47,6 +47,12 @@ export default function RoomPanel(){
 
     const dispatch = useDispatch();
 
+    const htmlDecode = (input) => {
+        var e = document.createElement('div');
+        e.innerHTML = input;
+        return e.childNodes[0].nodeValue;
+    }    
+
     const showModal = () => {
         const overlay = document.querySelector(".overlay")
         const modal = document.querySelector(".prompt-modal")
@@ -86,14 +92,15 @@ export default function RoomPanel(){
     useEffect(() => {
         dispatch(verifyUser());
         if(userLeftRoom){           
-            socket.emit('user-leaving', leftId, leftName, (name) => {
+            socket.emit('user-leaving', leftId, leftName, (name, username) => {
                 console.log(name);
             })
         }
     }, [userLeftRoom, leftName, dispatch, leftId]);
 
     useEffect(() => {
-        socket.on('user-left', data => {
+        socket.on('user-left', (data, username) => {
+            console.log(username);
             dispatch(updateRoomInfo({amount: -1}));  
         })
     }, [dispatch])
@@ -113,7 +120,7 @@ export default function RoomPanel(){
     }, [promptUser, showModal, hideModal])
 
     useEffect(() => {
-    if(Object.entries(currentUserRoom).length){
+        if(Object.keys(currentUserRoom).length){
             dispatch(verifyUser());
             dispatch(getRoom(currentUserRoom));
             setShowPanel(true)
@@ -146,7 +153,7 @@ export default function RoomPanel(){
                     ?
                     <div className="room-info">
                         <div className="room-name">
-                            <h2>{currentRoomInfo.name}</h2>
+                            <h2>{htmlDecode(currentRoomInfo.name)}</h2>
                         </div>        
                         <div className="room-options">
                             <h3>Capacity: {currentRoomInfo.roomCapacity}/{currentRoomInfo.limit}</h3>
