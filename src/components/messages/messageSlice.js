@@ -1,12 +1,11 @@
-import { faRProject } from "@fortawesome/free-brands-svg-icons";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { baseApi } from "../../app/App";
 
-const getRoomMessages = createAsyncThunk(
+export const getEncryptedRoomMessages = createAsyncThunk(
     'messageSlice/roomMessages',
     async (obj) => {
         const {roomId} = obj
-        const data = await fetch(`${baseApi}/api/get-messages/${roomId}`, {
+        const data = await fetch(`${baseApi}/messages/${roomId}`, {
             method: 'GET',
             credentials:'include',
             headers: {
@@ -16,6 +15,7 @@ const getRoomMessages = createAsyncThunk(
         });
         const {status} = data;
         const json = await data.json();
+        json['status'] = status;
         return json;
     }
 )
@@ -26,19 +26,46 @@ const messageSlice = createSlice({
         messages: [],
         encryptedMessages: [],
         errorMessage: '',
-        successMessage: '',             
+        successMessage: '',     
+        isLoading: false,
+        hasError: false,
+        noMessages: false,
+        errorMessage: ''     
     },
     reducers: {
         newLocalMessage: (state, action) => {
-            console.log(action.payload);
             state.messages.unshift(action.payload);
+        },
+        setRoomMessages: (state, action) => {
+            state.messages = action.payload.messages;
+            console.log(state.messages)
         }
     },
     extraReducers: {
-
+        [getEncryptedRoomMessages.pending]: (state) => {
+            state.isLoading = true;
+            state.hasError = false;
+        },
+        [getEncryptedRoomMessages.fulfilled]: (state, action) => {
+            state.isLoading = false;
+            console.log(action.payload);
+            if(action.payload.status === 200 || action.payload.status === 204){
+                if(action.payload.status === 204){
+                    state.noMessages = true;
+                    return;
+                }
+                state.noMessages = false;
+                state.encryptedMessages = action.payload.message;
+            }
+        },
+        [getEncryptedRoomMessages.rejected]: (state, action) => {
+            state.hasError = true;
+            state.errorMessage = action.payload.message;
+        }
     }
 })
 
 export const roomMessages = state => state.messageSlice.messages;
-export const {newLocalMessage} = messageSlice.actions;
+export const encryptedMessages = state => state.messageSlice.encryptedMessages;
+export const {newLocalMessage, setRoomMessages} = messageSlice.actions;
 export default messageSlice.reducer;
