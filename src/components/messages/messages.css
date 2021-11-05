@@ -1,10 +1,10 @@
-.message-container {
+.messages-container {
     height:100%;
     width:100%;
     position: relative;
 }
 
-.message-container .room-messages {
+.messages-container .room-messages {
     width: 100%;
     padding: 0 3em;
     box-sizing: border-box;
@@ -16,7 +16,11 @@
     overflow-y: scroll;
 }
 
-.message-container .room-messages .message {
+.messages-container .room-messages .message-container {
+    width:auto;
+}
+
+.messages-container .room-messages .message {
     min-width: auto;
     max-width: 50%;
     color:#fff;
@@ -27,12 +31,24 @@
     border-radius: 20px;
 }
 
+.messages-container .room-messages .username-container {
+    font-size: 0.9em;
+    color:#999;
+    width:auto;
+    padding-left: 0.25em;
+    margin-bottom:0.5em;
+    margin-right: auto;
+    text-align: left;
+}
+
 .user-message-local {
     background: rgba(113, 178, 128, 0.95);
-    margin:0 0 2em auto;
+    margin:0 0 2em 0;
+    float: right;
 }
 
 .user-message-public {
     background: rgba(19, 78, 94, 0.65);
     margin:0 auto 2em 0;    
+    float: left;
 }

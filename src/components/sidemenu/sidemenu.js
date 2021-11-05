@@ -36,6 +36,12 @@ export default function SideMenu(){
     const currentUserRoom = useSelector(currentRoom);
     const [moveRoom, setMoveRoom] = useState({});
 
+    const htmlDecode = (input) => {
+        var e = document.createElement('div');
+        e.innerHTML = input;
+        return e.childNodes[0].nodeValue;
+    }
+
     const handleModal = () => {
         const overlay = document.querySelector(".overlay");
         const modal = document.querySelector(".modal");
@@ -56,6 +62,10 @@ export default function SideMenu(){
 
     useEffect(() => {
         if(rooms.length){
+            rooms.map(e => ({
+                ...e,
+                name: htmlDecode(e.name)
+            }))
             setMoveRoom(rooms[0])
         } else {
             dispatch(setCurrentRoom({}));            
@@ -63,7 +73,7 @@ export default function SideMenu(){
     }, [rooms, dispatch]);
 
     useEffect(() => {
-        if(Object.entries(moveRoom).length){
+        if(Object.keys(moveRoom).length){
             dispatch(verifyUser())            
             socket.emit("move-room", moveRoom.name, moveRoom.roomId, (connected) => {
                 if(connected){
@@ -81,18 +91,18 @@ export default function SideMenu(){
     }, [userLeftRoom, dispatch]);
 
     useEffect(() => {
-        if(Object.entries(currentUserRoom).length){
+        if(Object.keys(currentUserRoom).length){
             const selected = document.querySelector(".selected")
             if(selected){
                 document.querySelector(".selected").classList.remove('selected');
             } 
-            document.querySelector(`#room-${currentUserRoom.roomId}-${currentUserRoom.name}`).classList.add('selected');
+            document.querySelector(`#room-${currentUserRoom.roomId}`).classList.add('selected');
         }
     }, [currentUserRoom]);
     
     
     useEffect(() => {
-        if(Object.entries(roomToAdd).length){
+        if(Object.keys(roomToAdd).length){
             if(roomToAdd){
                 dispatch(verifyUser())
                 .then(() => {
@@ -134,8 +144,8 @@ export default function SideMenu(){
                     !(hasError && isLoading)
                     ?
                     rooms.map((e,i) => (
-                        <div className={i === 0 ? 'room selected' : 'room'} id={`room-${e.roomId}-${e.name}`} key={i} onClick={() => {setMoveRoom({roomId: e.roomId, name: e.name})}}>
-                            <h3>{e.name}</h3>
+                        <div className={i === 0 ? 'room selected' : 'room'} id={`room-${e.roomId}`} key={i} onClick={() => {setMoveRoom({roomId: e.roomId, name: e.name})}}>
+                            <h3>{htmlDecode(e.name)}</h3>
                         </div>
                     ))
                     :

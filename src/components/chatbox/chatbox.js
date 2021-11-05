@@ -21,11 +21,14 @@ export default function ChatBox() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if(Object.entries(userRoom).length){
-            console.log(userRoom);
+        if(Object.keys(userRoom).length){
             setRoomName(userRoom.name);
             setRoomId(userRoom.roomId);
             setMessage('');
+        } else {
+            setRoomName('');
+            setRoomId('');
+            setMessage('');            
         }
     }, [userRoom]);
 

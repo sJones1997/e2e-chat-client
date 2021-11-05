@@ -24,7 +24,7 @@ export default function Register(){
         e.preventDefault();
         dispatch(submitRegistration({username: username, password: password, confirmPassword: confirmPassword}))
         .then(() => {
-            verifyUser();
+            dispatch(verifyUser());            
         })
     }
 

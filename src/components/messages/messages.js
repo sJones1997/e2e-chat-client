@@ -15,8 +15,8 @@ export default function Messages(){
     const roomEncryptedMessages = useSelector(encryptedMessages);
 
     useEffect(() => {
-        console.log(userRoom)
-        if(Object.entries(userRoom).length){
+        if(Object.keys(userRoom).length){
+            dispatch(setRoomMessages({messages: []}))            
             dispatch(getEncryptedRoomMessages(userRoom));
         } else {
             dispatch(setRoomMessages({messages: []}))
@@ -46,17 +46,22 @@ export default function Messages(){
                 message: decryptMessages(e.message)
             }));
             dispatch(setRoomMessages({messages: decryptedMessages}))
+        } else {
+
         }
     }, [roomEncryptedMessages])
 
     return (
-        <div className="message-container">
+        <div className="messages-container">
             <div className="room-messages">
                 {
                     messages.map((e,i) => (
-                    <div className={e.local_user ? 'message user-message-local' : 'message user-message-public'} key={i}>
-                        {e.message}
-                    </div>
+                        <div className="message-container" key={`message-${i}`}>
+                            <div className="username-container">{e.local_user === false ? <p>{e.username}</p> : ''}</div>
+                            <div className={e.local_user ? 'message user-message-local' : 'message user-message-public'} key={i}>
+                                {e.message}
+                            </div>                            
+                        </div>
                     ))
                 }                   
             </div>       

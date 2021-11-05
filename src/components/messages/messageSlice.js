@@ -38,7 +38,7 @@ const messageSlice = createSlice({
         },
         setRoomMessages: (state, action) => {
             state.messages = action.payload.messages;
-            console.log(state.messages)
+
         }
     },
     extraReducers: {
@@ -48,7 +48,6 @@ const messageSlice = createSlice({
         },
         [getEncryptedRoomMessages.fulfilled]: (state, action) => {
             state.isLoading = false;
-            console.log(action.payload);
             if(action.payload.status === 200 || action.payload.status === 204){
                 if(action.payload.status === 204){
                     state.noMessages = true;
