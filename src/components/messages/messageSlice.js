@@ -60,7 +60,6 @@ const messageSlice = createSlice({
         },
         [getEncryptedRoomMessages.rejected]: (state, action) => {
             state.hasError = true;
-            state.errorMessage = action.payload.message;
         }
     }
 })
