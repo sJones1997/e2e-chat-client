@@ -92,14 +92,15 @@ export default function RoomPanel(){
     useEffect(() => {
         dispatch(verifyUser());
         if(userLeftRoom){           
-            socket.emit('user-leaving', leftId, leftName, (name) => {
+            socket.emit('user-leaving', leftId, leftName, (name, username) => {
                 console.log(name);
             })
         }
     }, [userLeftRoom, leftName, dispatch, leftId]);
 
     useEffect(() => {
-        socket.on('user-left', data => {
+        socket.on('user-left', (data, username) => {
+            console.log(username);
             dispatch(updateRoomInfo({amount: -1}));  
         })
     }, [dispatch])

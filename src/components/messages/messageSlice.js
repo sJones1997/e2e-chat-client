@@ -38,7 +38,9 @@ const messageSlice = createSlice({
         },
         setRoomMessages: (state, action) => {
             state.messages = action.payload.messages;
-
+        },
+        userNotication: (state, action) => {
+            state.messages.unshift(action.payload);
         }
     },
     extraReducers: {
@@ -65,5 +67,5 @@ const messageSlice = createSlice({
 
 export const roomMessages = state => state.messageSlice.messages;
 export const encryptedMessages = state => state.messageSlice.encryptedMessages;
-export const {newLocalMessage, setRoomMessages} = messageSlice.actions;
+export const {newLocalMessage, setRoomMessages, userNotication} = messageSlice.actions;
 export default messageSlice.reducer;

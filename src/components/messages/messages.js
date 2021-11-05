@@ -1,7 +1,7 @@
 import { socket } from "../../app/App";
 import aes256 from "aes256";
 import { useDispatch } from "react-redux";
-import {roomMessages, getEncryptedRoomMessages, encryptedMessages, setRoomMessages, newLocalMessage} from './messageSlice';
+import {roomMessages, getEncryptedRoomMessages, encryptedMessages, setRoomMessages, newLocalMessage, userNotication} from './messageSlice';
 import { currentRoom } from '../sidemenu/sidemenuSlice';
 import './messages.css';
 import { useSelector } from "react-redux";
@@ -37,7 +37,21 @@ export default function Messages(){
                 dispatch(newLocalMessage(newMessage.message));
             }
         })
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        socket.on('user-left', (data, username) => {
+            dispatch(userNotication({username: username, left:true}))
+        })
+    }, [])    
+
+    useEffect(() => {
+        socket.on("user-joined", (data, username) => {
+            if(data){     
+                dispatch(userNotication({username: username, joined:true}))                       
+            }
+        })
+    }, [dispatch]);    
 
     useEffect(() => {
         if(roomEncryptedMessages.length){
@@ -56,12 +70,18 @@ export default function Messages(){
             <div className="room-messages">
                 {
                     messages.map((e,i) => (
+                        (!(e.left || e.joined))
+                        ?
                         <div className="message-container" key={`message-${i}`}>
                             <div className="username-container">{e.local_user === false ? <p>{e.username}</p> : ''}</div>
                             <div className={e.local_user ? 'message user-message-local' : 'message user-message-public'} key={i}>
                                 {e.message}
                             </div>                            
                         </div>
+                        :
+                        <div className="user-notifcation" key={`notification-${i}`}>
+                            <p>{e.username} {e.left ? 'left' : 'joined'} the chat</p>
+                        </div>                        
                     ))
                 }                   
             </div>       
