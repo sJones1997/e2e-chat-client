@@ -90,7 +90,7 @@
 
 }
 
-.register-container .form-container form .form-footer span, .login-container .form-container form .form-footer span {
+.register-container .form-container form .form-footer span a, .login-container .form-container form .form-footer span a {
     font-size: 2em;
     color:#134E5E;
 } 
