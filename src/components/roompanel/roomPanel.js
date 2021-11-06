@@ -1,6 +1,7 @@
 import './roomPanel.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faEllipsisV} from '@fortawesome/free-solid-svg-icons'
+import {faHandPointLeft} from '@fortawesome/free-solid-svg-icons'
 import {currentRoom} from '../sidemenu/sidemenuSlice';
 import { verifyUser } from '../../features/chatroom/chatroomSlice';
 import { 
@@ -143,7 +144,15 @@ export default function RoomPanel(){
                 dispatch(restoreState())
             })
         }
-    }, [userSignedOut, dispatch])
+    }, [userSignedOut, dispatch]);
+
+    const backToSideMenu = () => {
+        const sideMenu = document.querySelector('.chatroom-container .chatroom .side-menu');
+        const chatArea = document.querySelector('.chatroom-container .chatroom .chat-area');
+        const dropDown = document.querySelector('.options-dropdown');
+        sideMenu.style.display = 'block'
+        chatArea.style.display = dropDown.style.display = 'none'        
+    }
 
     return (
         <div className="room-panel-container">
@@ -155,6 +164,9 @@ export default function RoomPanel(){
                         <div className="room-name">
                             <h2>{htmlDecode(currentRoomInfo.name)}</h2>
                         </div>        
+                        <div onClick={() => {backToSideMenu()}} className="back-to-menu">
+                            <span><FontAwesomeIcon icon={faHandPointLeft} /></span>   
+                        </div>                        
                         <div className="room-options">
                             <h3>Capacity: {currentRoomInfo.roomCapacity}/{currentRoomInfo.limit}</h3>
                             <button onClick={() => {leaveRoomHandle()}}>Leave room</button>
@@ -169,6 +181,8 @@ export default function RoomPanel(){
                     </span>
                     <div className="options-dropdown" style={{"display": showMoreOptions ? 'block' : 'none'}}>
                         <ul>
+                            <li className="more-options-mobile">Capacity: {currentRoomInfo.roomCapacity}/{currentRoomInfo.limit}</li>
+                            <li onClick={() => {leaveRoomHandle(); backToSideMenu()}} className="more-options-mobile">Leave room</li>                            
                             <li onClick={() => {dispatch(logout())}}>Logout</li>
                         </ul>
                     </div>

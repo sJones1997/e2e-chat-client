@@ -80,6 +80,13 @@
     cursor:default !important;    
 }
 
+@media screen and (max-width: 540px) {
+    .search-bar-container .search-results {
+    left: 50%;
+    transform: translateX(-50%);
+    }    
+}
+
 /* 
 
 

@@ -77,11 +77,21 @@ export default function SideMenu(){
             dispatch(verifyUser())            
             socket.emit("move-room", moveRoom.name, moveRoom.roomId, (connected) => {
                 if(connected){
+                    if(window.innerWidth < 540){
+                        mobileSwap()
+                    }
                     dispatch(setCurrentRoom(moveRoom));
                 }
             })
         }
     }, [moveRoom, dispatch]);
+
+    const mobileSwap = () => {
+        const sideMenu = document.querySelector('.chatroom-container .chatroom .side-menu');
+        const chatArea = document.querySelector('.chatroom-container .chatroom .chat-area');
+        sideMenu.style.display = 'none'
+        chatArea.style.display = 'flex'
+    }
 
     useEffect(() => {
         if(userLeftRoom){
@@ -130,6 +140,8 @@ export default function SideMenu(){
             })
         }
     }, [userJoined, dispatch]);       
+
+
  
     return (
         <div className="side-menu-container">

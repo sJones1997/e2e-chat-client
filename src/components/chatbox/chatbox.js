@@ -70,7 +70,7 @@ export default function ChatBox() {
         <div className="chat-box-container">
             <form onSubmit={(e) => {handleSubmit(e)}}>
                 <input disabled={roomName && roomId ? '' : "disabled"} type="text" placeholder="Enter your message here..." value={message} onChange={(e) => setMessage(e.target.value)}/>
-                <input  disabled={roomName && roomId ? '' : "disabled"} type="submit" value="Send" />
+                <input className="send-message" disabled={roomName && roomId ? '' : "disabled"} type="submit" value="Send" />
             </form>
             {
                         (hasError)

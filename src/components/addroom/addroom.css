@@ -80,3 +80,10 @@
 .add-room-container .modal .add-room-body form input[type="submit"]:hover {
     background: rgba(113, 178, 128, 0.8);    
 }
+
+@media screen and (max-width: 540px) {
+    .add-room-container .modal {
+        width:90%;
+        height:30%;        
+    }    
+}

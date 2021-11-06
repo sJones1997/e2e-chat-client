@@ -40,3 +40,28 @@
     font-size: 1em;
     font-weight: 600;
 }
+
+@media screen and (max-width: 540px) {
+
+.chat-box-container {
+    width:100%;
+    background-color: #fff;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;    
+}    
+.send-message{
+    display: none;
+}
+
+.chat-box-container form input[type='text']{
+    width:100%;
+    border-radius: 0;
+    box-sizing: content-box;
+    border: none;
+}
+
+.chat-box-container form input[type='text']:focus {
+    border:none;
+}
+}
+

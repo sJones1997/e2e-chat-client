@@ -40,3 +40,21 @@
     flex: 1;
     border-top: 1px solid rgba(33, 33, 33, 0.15);     
 }
+
+
+@media screen and (max-width: 1114px) {
+
+    .chatroom-container .chatroom .side-menu {
+
+    }   
+}
+
+@media screen and (max-width: 540px) {
+    .chatroom-container .chatroom .side-menu {
+        flex: 1;
+    }    
+    .chatroom-container .chatroom .chat-area {
+        display: none;
+        flex:1;
+    }
+}

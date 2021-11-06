@@ -56,3 +56,8 @@
 .user-notifcation {
     margin: 1em 0;
 }
+@media screen and (max-width: 540px) {
+    .messages-container .room-messages {
+        padding: 0 1em;
+    }
+}
