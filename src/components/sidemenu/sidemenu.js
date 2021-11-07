@@ -18,7 +18,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import InfoBlock from '../infoblock/infoblock';
-import { socket } from '../../app/App';
+import { socket } from '../../features/chatroom/Chatroom';
 import { useState } from 'react';
 
 export default function SideMenu(){

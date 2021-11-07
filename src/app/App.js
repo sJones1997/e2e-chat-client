@@ -7,17 +7,10 @@ import {
 import Register from '../features/register/Register';
 import Login from '../features/login/Login';
 import Chatroom from '../features/chatroom/Chatroom';
-import socketIOCient from 'socket.io-client';
 import { useEffect } from 'react';
-import { faWindows } from '@fortawesome/free-brands-svg-icons';
 export const baseApi = `${process.env.REACT_APP_API_URL}/api`;
-export const socket = socketIOCient(`${process.env.REACT_APP_API_URL}`, {
-  withCredentials: true
-});
-socket.connect();
 
 function App() {
-
 
   useEffect(() => {
     const changeSize = () => {
@@ -31,6 +24,7 @@ function App() {
     window.addEventListener('load', changeSize);
     window.addEventListener('resize', changeSize);
     return () => {
+      window.removeEventListener('load');
       window.removeEventListener('resize');      
     }
   }, [])

@@ -28,7 +28,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import InfoBlock from '../infoblock/infoblock';
 import { useState } from 'react';
-import { socket } from '../../app/App';
+import { socket } from '../../features/chatroom/Chatroom';
 
 export default function RoomPanel(){
 
@@ -101,7 +101,6 @@ export default function RoomPanel(){
 
     useEffect(() => {
         socket.on('user-left', (data, username) => {
-            console.log(username);
             dispatch(updateRoomInfo({amount: -1}));  
         })
     }, [dispatch])

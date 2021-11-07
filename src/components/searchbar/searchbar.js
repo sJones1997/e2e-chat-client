@@ -1,4 +1,4 @@
-import {socket} from '../../app/App';
+import { socket } from '../../features/chatroom/Chatroom';
 import { verifyUser } from '../../features/chatroom/chatroomSlice';
 import {
     updateSearchResult, 
@@ -25,7 +25,7 @@ export default function SearchBar(){
     const hasError = useSelector(error);
     const errorMsg = useSelector(errorMessage);
     const [searchTerm, setSearchTerm] = useState('');
-    const [roomToJoin, setRoomToJoin] = useState({});
+    const [roomToJoin, setRoomToJoin] = useState({});   
 
     useEffect(() => {
         dispatch(verifyUser());

@@ -1,4 +1,4 @@
-import { socket } from "../../app/App";
+import { socket } from '../../features/chatroom/Chatroom';
 import aes256 from "aes256";
 import { useDispatch } from "react-redux";
 import {roomMessages, getEncryptedRoomMessages, encryptedMessages, setRoomMessages, newLocalMessage, userNotication} from './messageSlice';

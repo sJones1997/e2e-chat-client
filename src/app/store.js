@@ -7,6 +7,7 @@ import sideMenuReducer from "../components/sidemenu/sidemenuSlice";
 import messageReducer from '../components/messages/messageSlice';
 import roomPanelReducer from '../components/roompanel/roomPanelSlice';
 import searchBarReducer from '../components/searchbar/searchbarSlice';
+import { socket } from '../features/chatroom/Chatroom'
 
 const combinedReducer = combineReducers({
     registerSlice: registerReducer,
@@ -21,6 +22,7 @@ const combinedReducer = combineReducers({
 
 const rootReducer = (state, action) => {
     if(action.type === 'roomPanelSlice/restoreState'){
+        socket.disconnect();
         return combinedReducer(undefined, action);
     }
     return combinedReducer(state, action);

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import './chatbox.css'
 import { currentRoom } from '../sidemenu/sidemenuSlice';
-import { socket } from '../../app/App';
+import { socket } from '../../features/chatroom/Chatroom';
 import aes256 from 'aes256';
 import { useSelector } from 'react-redux';
 import { newLocalMessage } from '../messages/messageSlice';
