@@ -113,8 +113,17 @@
 }
 
 @media screen and (max-width: 540px) {
-    .register-container .form-container, .login-container .form-container {
+    .register-container .form-container form .form-body input , .login-container .form-container form .form-body input {
+        padding: 2em 2em 1em 0.25em;
+    }
+
+    .register-container .form-container {
         width: 90%;
         height:95%;
+    }    
+
+    .login-container .form-container {
+        height:75%;        
+        width: 90%;        
     }    
 }
