@@ -23,3 +23,11 @@
 .info {
     background-color: teal;
 }
+
+@media screen and (max-width:540px) {
+
+    .info-block {
+        width: 80%;
+    }
+    
+}
