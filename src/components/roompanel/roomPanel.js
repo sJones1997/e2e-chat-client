@@ -71,6 +71,7 @@ export default function RoomPanel(){
         modal.style.display = "none"        
         overlay.style.display = "none";   
         overlay.removeEventListener("click", () => {})
+        
     }    
 
     const deleteRoomHandle = () => {
@@ -83,27 +84,27 @@ export default function RoomPanel(){
     }
 
     useEffect(() => {
-        socket.on("user-joined", (data) => {
+        socket.off('user-joined').on("user-joined", (data) => {
             if(data){
                 dispatch(updateRoomInfo({amount: 1}));            
             }
         })
     }, [dispatch]);
 
+
     useEffect(() => {
-        dispatch(verifyUser());
+        socket.off('user-left').on('user-left', (data, username) => {          
+            dispatch(updateRoomInfo({amount: -1}));  
+        })
+    }, [dispatch])    
+
+    useEffect(() => {
         if(userLeftRoom){           
             socket.emit('user-leaving', leftId, leftName, (name, username) => {
-                console.log(name);
+                console.log("USER LEAVING")
             })
         }
     }, [userLeftRoom, leftName, dispatch, leftId]);
-
-    useEffect(() => {
-        socket.on('user-left', (data, username) => {
-            dispatch(updateRoomInfo({amount: -1}));  
-        })
-    }, [dispatch])
 
     const leaveRoomHandle = () => {
         setLeftName(currentRoomInfo.name);

@@ -32,10 +32,8 @@ const chatroomSlice = createSlice({
             state.hasError = false
         },
         [verifyUser.fulfilled]: (state, action) => {
-            console.log(action.payload)
             if(action.payload.status === 200){
                 state.userSignedIn = true;
-                console.log(state.userSignedIn);
             } else if (action.payload.status === 401) {
                 state.userSignedIn = false
             }

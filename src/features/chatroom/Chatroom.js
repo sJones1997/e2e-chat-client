@@ -8,9 +8,11 @@ import SideMenu from '../../components/sidemenu/sidemenu';
 import RoomPanel from '../../components/roompanel/roomPanel';
 import { useDispatch, useSelector} from 'react-redux';
 import { useHistory } from 'react-router';
-import {io} from 'socket.io-client';
-export const socket = io(`${process.env.REACT_APP_API_URL}`, {withCredentials: true, autoConnect: false});
-
+import socketIOCient from 'socket.io-client';
+export const socket = socketIOCient(`${process.env.REACT_APP_API_URL}`, {
+    withCredentials: true
+  });
+socket.connect();
 export default function Chatroom(){
 
     const dispatch = useDispatch();
@@ -21,16 +23,9 @@ export default function Chatroom(){
         dispatch(verifyUser())
     })     
 
-    console.log()
-
     useEffect(() => {
-        console.log(userAuthenticated);
         if(!userAuthenticated){
             history.push('/register');
-        } else {
-            if(!socket.connected){
-                socket.connect();
-            }
         }
     }, [userAuthenticated, history])
 

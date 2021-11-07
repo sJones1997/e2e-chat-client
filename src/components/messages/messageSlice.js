@@ -29,8 +29,7 @@ const messageSlice = createSlice({
         successMessage: '',     
         isLoading: false,
         hasError: false,
-        noMessages: false,
-        errorMessage: ''     
+        noMessages: false    
     },
     reducers: {
         newLocalMessage: (state, action) => {

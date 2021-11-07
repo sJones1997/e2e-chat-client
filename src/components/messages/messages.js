@@ -21,7 +21,7 @@ export default function Messages(){
         } else {
             dispatch(setRoomMessages({messages: []}))
         }
-    }, [userRoom]);
+    }, [userRoom, dispatch]);
 
     const decryptMessages = (messageToDecrypt) => {
         if(messageToDecrypt.length){
@@ -31,19 +31,19 @@ export default function Messages(){
     }
 
     useEffect(() => {
-        socket.on('receive-message', newMessage => {
+        socket.off('receive-message').on('receive-message', newMessage => {
             if(newMessage.status){
                 newMessage.message.message = decryptMessages(newMessage.message.message)
                 dispatch(newLocalMessage(newMessage.message));
             }
         })
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         socket.on('user-left', (data, username) => {
             dispatch(userNotication({username: username, left:true}))
         })
-    }, [])    
+    }, [dispatch])    
 
     useEffect(() => {
         socket.on("user-joined", (data, username) => {
@@ -63,7 +63,7 @@ export default function Messages(){
         } else {
 
         }
-    }, [roomEncryptedMessages])
+    }, [roomEncryptedMessages, dispatch])
 
     return (
         <div className="messages-container">
