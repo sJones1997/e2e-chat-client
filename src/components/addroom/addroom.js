@@ -14,7 +14,7 @@ import InfoBlock from '../infoblock/infoblock';
 export default function AddRoom(){
 
     const [newRoomName, setNewRoomName] = useState("");
-    const [newRoomLimit, setNewRoomLimit] = useState(2);
+    const [newRoomLimit, setNewRoomLimit] = useState();
 
     const dispatch = useDispatch();
 
@@ -51,8 +51,8 @@ export default function AddRoom(){
                 <div className="add-room-body">
                     <form onSubmit={(e) => handleSubmit(e)}>
                         <div className="room-details">
-                            <input type="text" placeholder="Room name" min="3" max="25" value={newRoomName} onChange={(e) => {setNewRoomName(e.target.value)}} />
-                            <input type="number" placeholder="Max members (2 - 8)" min="2" max="8" value={newRoomLimit} onChange={(e) => {setNewRoomLimit(e.target.value)}} />
+                            <input type="text" placeholder="Room name" name="New Room Name" min="3" max="25" value={newRoomName} onChange={(e) => {setNewRoomName(e.target.value)}} />
+                            <input type="number" placeholder="Room Limit (2 - 8)" min="2" max="8" value={newRoomLimit} onChange={(e) => {setNewRoomLimit(e.target.value)}} />
                         </div>
                         <div>
                             <input type="submit" />                        
