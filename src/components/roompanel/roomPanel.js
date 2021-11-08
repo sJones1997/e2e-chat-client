@@ -25,7 +25,7 @@ import {
 from './roomPanelSlice';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import InfoBlock from '../infoblock/infoblock';
 import { useState } from 'react';
 import { socket } from '../../features/chatroom/Chatroom';
@@ -45,6 +45,7 @@ export default function RoomPanel(){
     const userLeftRoom = useSelector(userLeft);
     const [leftName, setLeftName] = useState('');
     const [leftId, setLeftId] = useState(0);
+    const [showModal, setShowModal] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -54,34 +55,37 @@ export default function RoomPanel(){
         return e.childNodes[0].nodeValue;
     }    
 
-    const showModal = () => {
-        const overlay = document.querySelector(".overlay")
-        const modal = document.querySelector(".prompt-modal")
-        overlay.style.display = "block";  
-        modal.style.display = "flex";
-        overlay.addEventListener("click", () => {
-            hideModal();
-        })
+
+    const showMoreOptionsHandle = useCallback((val) => {
+        setShowMoreOptions(val);
+    }, [])    
+
+    const modalHandle = (val) => {
+        setShowModal(val);
     }
 
-    const hideModal = () => {
-        dispatch(restorePrompt());
-        const overlay = document.querySelector(".overlay");
-        const modal = document.querySelector(".prompt-modal");
-        modal.style.display = "none"        
-        overlay.style.display = "none";   
-        overlay.removeEventListener("click", () => {})
-        
-    }    
+    useEffect(() => {
+        const overlay = document.querySelector(".overlay"); 
+        if(showModal){
+            overlay.style.display = 'block';
+            showMoreOptionsHandle(false)
+            overlay.addEventListener("click", () => {
+                dispatch(restorePrompt());
+                modalHandle(false);
+                overlay.removeEventListener("click", () => {})                  
+            }) 
+        } else {
+            overlay.style.display = 'none';
+            modalHandle(false);
+            dispatch(restorePrompt())            
+        }
+    }, [showModal, showMoreOptionsHandle, dispatch])
+
 
     const deleteRoomHandle = () => {
         dispatch(verifyUser());
         dispatch(deleteRoom({id: currentRoomInfo.id}))
     }    
-
-    const showMoreOptionsHandle = () => {
-        setShowMoreOptions(!showMoreOptions);
-    }
 
     useEffect(() => {
         socket.off('user-joined').on("user-joined", (data) => {
@@ -99,7 +103,8 @@ export default function RoomPanel(){
     }, [dispatch])    
 
     useEffect(() => {
-        if(userLeftRoom){           
+        if(userLeftRoom){      
+            backToSideMenu();               
             socket.emit('user-leaving', leftId, leftName, (name, username) => {
                 console.log("USER LEAVING")
             })
@@ -114,17 +119,17 @@ export default function RoomPanel(){
 
     useEffect(() => {
         if(promptUser){
-            showModal();
+            modalHandle(true);
         } else {
-            hideModal()
+            modalHandle(false);
         }
-    }, [promptUser, showModal, hideModal])
+    }, [promptUser])
 
     useEffect(() => {
         if(Object.keys(currentUserRoom).length){
             dispatch(verifyUser());
             dispatch(getRoom(currentUserRoom));
-            setShowPanel(true)
+            setShowPanel(true);
         } else {
             setShowPanel(false);
         }
@@ -132,10 +137,11 @@ export default function RoomPanel(){
 
     useEffect(() => {
         if(deletedRoom){
-            hideModal();
+            modalHandle(false);
+            backToSideMenu();
             dispatch(restoreSuccess());
         }
-    }, [deletedRoom, dispatch, hideModal]);
+    }, [deletedRoom, dispatch]);
 
     useEffect(() => {
         if(userSignedOut){
@@ -147,11 +153,14 @@ export default function RoomPanel(){
     }, [userSignedOut, dispatch]);
 
     const backToSideMenu = () => {
-        const sideMenu = document.querySelector('.chatroom-container .chatroom .side-menu');
-        const chatArea = document.querySelector('.chatroom-container .chatroom .chat-area');
-        const dropDown = document.querySelector('.options-dropdown');
-        sideMenu.style.display = 'block'
-        chatArea.style.display = dropDown.style.display = 'none'        
+        console.log(window.innerWidth);
+        if(window.innerWidth <= 540){
+            const sideMenu = document.querySelector('.chatroom-container .chatroom .side-menu');
+            const chatArea = document.querySelector('.chatroom-container .chatroom .chat-area');
+            const dropDown = document.querySelector('.options-dropdown');
+            sideMenu.style.display = 'block'
+            chatArea.style.display = dropDown.style.display = 'none'             
+        }       
     }
 
     return (
@@ -176,24 +185,24 @@ export default function RoomPanel(){
                     ''
                 }   
                 <div className="more-options">
-                    <span onClick={() => {showMoreOptionsHandle()}}>
+                    <span onClick={() => {showMoreOptionsHandle(true)}}>
                         <FontAwesomeIcon icon={faEllipsisV} />                                
                     </span>
                     <div className="options-dropdown" style={{"display": showMoreOptions ? 'block' : 'none'}}>
                         <ul>
                             <li className="more-options-mobile">Capacity: {currentRoomInfo.roomCapacity}/{currentRoomInfo.limit}</li>
-                            <li onClick={() => {leaveRoomHandle(); backToSideMenu()}} className="more-options-mobile">Leave room</li>                            
+                            <li onClick={() => {leaveRoomHandle()}} className="more-options-mobile">Leave room</li>                            
                             <li onClick={() => {dispatch(logout())}}>Logout</li>
                         </ul>
                     </div>
                 </div>                                                              
             </div>                
-                <div className="prompt-modal"> 
+                <div className="prompt-modal" style={{"display": showModal ? 'block' : 'none'}}> 
                     <div className="user-message">
                         <h2>{promptUserMessage}</h2>
                     </div>
                     <div className="leave-options">
-                        <button className="stay" onClick={() => {hideModal()}}>Stay</button>
+                        <button className="stay" onClick={() => {modalHandle(false)}}>Stay</button>
                         <button className="leave" onClick={() => {deleteRoomHandle()}}>Leave room</button>
                     </div>
                 </div>                            

@@ -40,22 +40,25 @@ export default function ChatBox() {
     const encryptMessage = (messageToEncrypt) => {
         if(messageToEncrypt.length){
             const encryptMessage = aes256.encrypt(process.env.REACT_APP_AES_KEY, messageToEncrypt);
-            setMessageObject({sent: Date(), roomId: roomId, roomName: roomName, message: encryptMessage});
+            setMessageObject({sent: Date(), roomId: roomId, roomName: roomName, message: encryptMessage, decryptedMessage: messageToEncrypt});
         }
     } 
 
     useEffect(() => {
         if(messageObject.message){
+            const decryptedMessage = messageObject.decryptedMessage;
+            delete messageObject.decryptedMessage;
             socket.emit("send-message", messageObject, (sent, data ='') => {
                 if(sent){
-                    data.message = message;
+                    console.log(messageObject.message, decryptedMessage)
+                    data.message = decryptedMessage;
                     setMessage('');
                     dispatch(newLocalMessage(data));
 
                 } else {
                     if(!sent && data.length){
                         setHasError(true)
-                        setErrorMessage(message);
+                        setErrorMessage(data.message);
                         setTimeout(() => {
                             setHasError(false);
                             setErrorMessage('');

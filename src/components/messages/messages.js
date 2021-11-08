@@ -60,8 +60,6 @@ export default function Messages(){
                 message: decryptMessages(e.message)
             }));
             dispatch(setRoomMessages({messages: decryptedMessages}))
-        } else {
-
         }
     }, [roomEncryptedMessages, dispatch])
 

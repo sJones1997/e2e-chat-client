@@ -159,6 +159,23 @@
         border-top-left-radius: 10px;
     }    
 
+    .prompt-modal {
+        width:90%;
+        height:30%;
+        top:30%;
+    }
+
+    .prompt-modal .user-message h2{
+        font-size: 1.25em;
+        padding: 1em;
+    }
+
+    .prompt-modal .leave-options {
+        flex-direction: column;
+        width:100%;
+        padding-bottom: 1em;
+    }
+
     .room-options {
         display: none !important;
     }
