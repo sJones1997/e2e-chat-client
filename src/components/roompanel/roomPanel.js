@@ -185,7 +185,7 @@ export default function RoomPanel(){
                     ''
                 }   
                 <div className="more-options">
-                    <span onClick={() => {showMoreOptionsHandle(true)}}>
+                    <span onClick={() => {showMoreOptionsHandle(!showMoreOptions)}}>
                         <FontAwesomeIcon icon={faEllipsisV} />                                
                     </span>
                     <div className="options-dropdown" style={{"display": showMoreOptions ? 'block' : 'none'}}>
